@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>2a5998e5-3a5a-4d48-b0b9-d2fa5354d0b9</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Unicorn.Shared</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Attirubes\EnumPropertyAttribute.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Base\SafeRaise.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extension\CollectionExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extension\EnumExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extension\ExceptionExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extension\ObservableCollectionExtension.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extension\PrimitiveTypeExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extension\TaskExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Net\EventArgs\ParseFinishEventArgs.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Net\ParseResult\ParseError.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Net\ParseResult\ParseResult.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Net\Parser\BaseParser.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Net\Parser\IParser.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PlatformService\IApplicationInformationService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PlatformService\ICryptographyService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PlatformService\IDeviceInformationService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PlatformService\IDispatcherService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PlatformService\IFileService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PlatformService\ILogService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PlatformService\INetowrkService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PlatformService\PlatformService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\Attribute\HttpIgnoreAttribute.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\Attribute\HttpMultiPartPropertyAttribute.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\Attribute\HttpPropertyAttribute.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\Attribute\HttpPropertyFor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\Attribute\HttpRawByteArrayPropertyAttribute.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\Attribute\HttpRawStringPropertyAttribute.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\Extension\HttpResponseMessageExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\HttpClientContainer\HttpClientContainer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\HttpFlow\IHttpPreFlow.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\HttpRequestCreator\HttpRequestCreator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\JsonConverter\BooleanJsonConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\JsonConverter\EnumKeyJsonConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\JsonConverter\EnumKeyJsonKeywordConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\JsonConverter\Int32JsonConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\JsonConverter\IntToEnumJsonConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\JsonConverter\TimeSpanJsonConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\JsonConverter\TimeSpanWithTypeInfoJsonConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\JsonConverter\UnixMilliSecondsToDateTimeJsonConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\JsonConverter\UnixSecondsToDateTimeJsonConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\ParameterPacker\ApacheMimeTypes.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\ParameterPacker\HttpParameterMutiPartPackItem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\ParameterPacker\HttpParameterPacker.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\ParameterPacker\HttpParameterPackResult.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\Parameter\HttpServiceParameter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\Parser\IDecrypter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\Parser\JsonEncryptedParser.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\Parser\JsonParser.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\ServiceParameterConverter\DateTimeToUnixSecondsParameterConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\ServiceParameterConverter\EnumKeyParameterConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\ServiceParameterConverter\EnumToIntParameterConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\ServiceParameterConverter\IServiceParameterConveter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\ServiceParameterConverter\TimeSpanParameterConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\Service\BaseHttpService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\Utility\HttpRequestUrlHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\Utility\JsonSerializerSetting.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\Utility\ServiceModelJsonConvert.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Threading.Tasks.Synchronize\AsyncAutoResetEvent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Threading.Tasks.Synchronize\AsyncBarrier.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Threading.Tasks.Synchronize\AsyncCountdownEvent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Threading.Tasks.Synchronize\AsyncLock.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Threading.Tasks.Synchronize\AsyncManualResetEvent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Threading.Tasks.Synchronize\AsyncReaderWriterLock.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Threading.Tasks.Synchronize\AsyncSemaphore.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Threading.Tasks\SignalTask.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Threading.Tasks\TplTaskExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utility\Convert2.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utility\EnumHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utility\JsonIoUtility.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utility\RegExpUtility.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utility\UnixDateTimeConverter.cs" />
+  </ItemGroup>
+</Project>

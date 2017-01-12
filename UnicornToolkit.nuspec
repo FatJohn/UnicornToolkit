@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>UnicornToolkit</id>
+    <version>1.0.0</version>
+    <authors>FatJohn</authors>
+    <owners>FatJohn</owners>
+    <projectUrl>https://github.com/FatJohn/UnicornToolkit</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>This library is mainly to provide a simple way connect http service.</description>
+    <releaseNotes>Initial Release</releaseNotes>
+    <copyright>Copyright 2016</copyright>
+    <tags>web utility http uwp</tags>
+    <dependencies>
+      <group targetFramework="net45">
+        <dependency id="Newtonsoft.Json" version="9.0.1" />
+      </group>
+      <group targetFramework="netstandard1.2">
+        <dependency id="Newtonsoft.Json" version="9.0.1" />
+        <dependency id="Microsoft.NETCore.Portable.Compatibility" version="1.0.1" />
+        <dependency id="NETStandard.Library" version="1.6.1" />
+        <dependency id="System.Threading.Tasks.Parallel" version="4.3.0" />
+      </group>
+      <group targetFramework="uap">
+        <dependency id="Newtonsoft.Json" version="9.0.1" />
+        <dependency id="Microsoft.Xaml.Behaviors.Uwp.Managed" version="2.0.0" />
+        <dependency id="Microsoft.NETCore.UniversalWindowsPlatform" version="5.2.2" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <!-- .NET Standard assemblies -->
+    <file src="Library\Unicorn.DotNetStandard\bin\Release\Unicorn.dll" target="lib\netstandard1.2\Unicorn.dll" />
+    <file src="Library\Unicorn.DotNetStandard\bin\Release\Unicorn.pdb" target="lib\netstandard1.2\Unicorn.pdb" />
+    <!-- .NET Framework assemblies -->
+    <file src="Library\Unicorn.DotNet\bin\Release\Unicorn.dll" target="lib\net45\Unicorn.dll" />
+    <file src="Library\Unicorn.DotNet\bin\Release\Unicorn.pdb" target="lib\net45\Unicorn.pdb" />
+    <!-- UWP reference assemblies -->
+    <file src="Library\Unicorn.UWP\bin\Release\Unicorn.dll" target="lib\uap\Unicorn.dll" />
+    <file src="Library\Unicorn.UWP\bin\Release\Unicorn.pri" target="lib\uap\Unicorn.pri" />
+    <file src="Library\Unicorn.UWP\bin\Release\Unicorn.pdb" target="lib\uap\Unicorn.pdb" />
+    <file src="Library\Unicorn.UWP\bin\Release\Unicorn.xr.xml" target="lib\uap\Unicorn.xr.xml" />
+    <file src="Library\Unicorn.UWP\bin\Release\themes\Generic.xbf" target="lib\uap\themes\Generic.xbf" />
+    <file src="Library\Unicorn.UWP\bin\Release\UI.Xaml\Controls\ThreeStateImageButton\ThreeStateImageButton.xbf" target="lib\uap\UI.Xaml\Controls\ThreeStateImageButton\ThreeStateImageButton.xbf" />
+    <file src="Library\Unicorn.UWP\bin\Release\UI.Xaml\Controls\WaitDialog\WaitDialog.xbf" target="lib\uap\UI.Xaml\Controls\WaitDialog\WaitDialog.xbf" />
+    <file src="Library\Unicorn.UWP\themes\Generic.xaml" target="lib\uap\themes\Generic.xaml" />
+    <file src="Library\Unicorn.UWP\UI.Xaml\Controls\ThreeStateImageButton\*.xaml" target="lib\uap\UI.Xaml\Controls\ThreeStateImageButton\ThreeStateImageButton.xaml" />
+    <file src="Library\Unicorn.UWP\UI.Xaml\Controls\WaitDialog\*.xaml" target="lib\uap\UI.Xaml\Controls\WaitDialog\WaitDialog.xaml" />
+  </files>
+</package> 

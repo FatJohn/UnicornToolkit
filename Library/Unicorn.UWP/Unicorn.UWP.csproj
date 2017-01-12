@@ -1,0 +1,209 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{D8891BE4-8F87-4D79-9181-07A9538C8B74}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Unicorn</RootNamespace>
+    <AssemblyName>Unicorn</AssemblyName>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
+    <TargetPlatformVersion>10.0.14393.0</TargetPlatformVersion>
+    <TargetPlatformMinVersion>10.0.10586.0</TargetPlatformMinVersion>
+    <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <PlatformTarget>x86</PlatformTarget>
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
+    <PlatformTarget>ARM</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\ARM\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>ARM</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|ARM'">
+    <PlatformTarget>ARM</PlatformTarget>
+    <OutputPath>bin\ARM\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>ARM</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <PlatformTarget>x64</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <PlatformTarget>x64</PlatformTarget>
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
+    <None Include="project.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Behavior\OddBehavior.cs" />
+    <Compile Include="Behavior\VisualStateBehavior.cs" />
+    <Compile Include="Extension\ApplicationExtensions.cs" />
+    <Compile Include="Extension\BitmapImageExtensions.cs" />
+    <Compile Include="Extension\CompositorAnimationExtension.cs" />
+    <Compile Include="Extension\ListViewBaseExtention.cs" />
+    <Compile Include="Extension\MessageDialogExtensions.cs" />
+    <Compile Include="Extension\PlaybackMediaMarkerSequenceExtensions.cs" />
+    <Compile Include="Extension\StoryboardExtension.cs" />
+    <Compile Include="Extension\StringExtension.cs" />
+    <Compile Include="Extension\TypeInfoExtensions.cs" />
+    <Compile Include="Extension\UIElementExtensions.cs" />
+    <Compile Include="Extension\WebViewExtensions.cs" />
+    <Compile Include="Manager\ResourceManager.cs" />
+    <Compile Include="PlatformService\ApplicationInformationService.cs" />
+    <Compile Include="PlatformService\CryptographyService.cs" />
+    <Compile Include="PlatformService\CustomAppViewDispatcherService.cs" />
+    <Compile Include="PlatformService\CustomDispatcherService.cs" />
+    <Compile Include="PlatformService\DeviceInformationService.cs" />
+    <Compile Include="PlatformService\DispatcherService.cs" />
+    <Compile Include="PlatformService\NetowrkInformationService.cs" />
+    <Compile Include="PlatformService\NullLogService.cs" />
+    <Compile Include="PlatformService\PlatformFile.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Storage\FileWatcher.cs" />
+    <Compile Include="Storage\VariableStorage\ApplicationSettingStorageTarget.cs" />
+    <Compile Include="Storage\VariableStorage\IVariableStorageTarget.cs" />
+    <Compile Include="Storage\VariableStorage\VariableStorage.cs" />
+    <Compile Include="UI.Xaml\AttachedProperty\FlipProperty.cs" />
+    <Compile Include="UI.Xaml\AttachedProperty\FlyoutProperty.cs" />
+    <Compile Include="UI.Xaml\AttachedProperty\FocusProperty.cs" />
+    <Compile Include="UI.Xaml\AttachedProperty\VisualStateProperty.cs" />
+    <Compile Include="UI.Xaml\Controls\ThreeStateImageButton\ThreeStateImageButton.cs" />
+    <Compile Include="UI.Xaml\Controls\ThreeStateImageButton\ThreeStateImageButtonState.cs" />
+    <Compile Include="UI.Xaml\Controls\WaitDialog\WaitDialog.cs" />
+    <Compile Include="UI.Xaml\Converters\BooleanToThicknessConverter.cs" />
+    <Compile Include="UI.Xaml\Converters\BooleanToVisibilityConverter.cs" />
+    <Compile Include="UI.Xaml\Converters\ColorContrastConverter.cs" />
+    <Compile Include="UI.Xaml\Converters\DateTimeConverter.cs" />
+    <Compile Include="UI.Xaml\Converters\HTMLToTextConverter.cs" />
+    <Compile Include="UI.Xaml\Converters\IEnumerableToVisibilityConverter.cs" />
+    <Compile Include="UI.Xaml\Converters\InverseNumberConverter.cs" />
+    <Compile Include="UI.Xaml\Converters\MillisecondToStringConverter.cs" />
+    <Compile Include="UI.Xaml\Converters\MultiplicationConverter.cs" />
+    <Compile Include="UI.Xaml\Converters\NullToVisibilityConverter.cs" />
+    <Compile Include="UI.Xaml\Converters\PositionConverter.cs" />
+    <Compile Include="UI.Xaml\Converters\ResourceToStringConveter.cs" />
+    <Compile Include="UI.Xaml\Converters\ReverseBooleanToVisibilityConverter.cs" />
+    <Compile Include="UI.Xaml\Converters\ReverseNullToVisibilityConverter.cs" />
+    <Compile Include="UI.Xaml\Converters\ReverseVisibilityConverter.cs" />
+    <Compile Include="UI.Xaml\Converters\StringFormatConverter.cs" />
+    <Compile Include="UI.Xaml\Converters\StringToBooleanConverter.cs" />
+    <Compile Include="UI.Xaml\Converters\StringToIntConverter.cs" />
+    <Compile Include="UI.Xaml\Converters\StringToVisibilityConverter.cs" />
+    <Compile Include="UI.Xaml\Converters\TargetStringToVisibilityConverter.cs" />
+    <Compile Include="Utility\AnalyticsInfoUtility.cs" />
+    <Compile Include="Utility\CompositionAnimationUtility.cs" />
+    <Compile Include="Utility\DataBindingHelper.cs" />
+    <Compile Include="Utility\MarketHelper.cs" />
+    <Compile Include="Utility\MessageDialog\MessageBoxButton.cs" />
+    <Compile Include="Utility\MessageDialog\MessageBoxResult.cs" />
+    <Compile Include="Utility\MessageDialog\MessageDialogResult.cs" />
+    <Compile Include="Utility\MessageDialog\MessageDialogUtility.cs" />
+    <Compile Include="Utility\NetworkHelper.cs" />
+    <Compile Include="Utility\PopupUtility.cs" />
+    <Compile Include="Utility\StorageHelper.cs" />
+    <Compile Include="Utility\VisualTreeManager.cs" />
+    <Compile Include="Utility\WaitDialogUtility.cs" />
+    <Compile Include="Utility\ZipArchiveUtility.cs" />
+    <Compile Include="ValueSetWorkerQueue\ValueSetWorkerQueue.cs" />
+    <EmbeddedResource Include="Properties\Unicorn.UWP.rd.xml" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Page Include="themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UI.Xaml\Controls\ThreeStateImageButton\ThreeStateImageButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UI.Xaml\Controls\WaitDialog\WaitDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <Import Project="..\Unicorn.Shared\Unicorn.Shared.projitems" Label="Shared" />
+  <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
+    <VisualStudioVersion>14.0</VisualStudioVersion>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

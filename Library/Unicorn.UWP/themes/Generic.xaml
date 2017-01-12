@@ -1,0 +1,12 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Unicorn"
+    xmlns:controls="using:Unicorn.Controls">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="ms-appx:///Unicorn.UWP/UI.Xaml/Controls/WaitDialog/WaitDialog.xaml" />
+        <ResourceDictionary Source="ms-appx:///Unicorn.UWP/UI.Xaml/Controls/ThreeStateImageButton/ThreeStateImageButton.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+    
+</ResourceDictionary>

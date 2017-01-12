@@ -1,0 +1,73 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:Unicorn.UI.Xaml.Controls"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core">
+
+    <Style TargetType="controls:ThreeStateImageButton">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="VerticalAlignment" Value="Stretch"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="controls:ThreeStateImageButton">
+                    <Grid>
+                        <i:Interaction.Behaviors>
+                            <i:BehaviorCollection>
+                                <core:DataTriggerBehavior Binding="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=IsPointerOver}" Value="True" ComparisonCondition="Equal">
+                                    <core:ChangePropertyAction TargetObject="{Binding ElementName=ThreeStateImage}" PropertyName="Source" >
+                                        <core:ChangePropertyAction.Value>
+                                            <BitmapImage UriSource="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=PointerOverImageUri}"/>
+                                        </core:ChangePropertyAction.Value>
+                                    </core:ChangePropertyAction>
+                                </core:DataTriggerBehavior>
+
+                                <core:DataTriggerBehavior Binding="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=IsPressed}" Value="True" ComparisonCondition="Equal">
+                                    <core:ChangePropertyAction TargetObject="{Binding ElementName=ThreeStateImage}" PropertyName="Source" >
+                                        <core:ChangePropertyAction.Value>
+                                            <BitmapImage UriSource="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=PressedImageUri}"/>
+                                        </core:ChangePropertyAction.Value>
+                                    </core:ChangePropertyAction>
+                                </core:DataTriggerBehavior>
+
+                                <core:DataTriggerBehavior Binding="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=IsPointerOver}" Value="False" ComparisonCondition="Equal">
+                                    <core:ChangePropertyAction TargetObject="{Binding ElementName=ThreeStateImage}" PropertyName="Source" >
+                                        <core:ChangePropertyAction.Value>
+                                            <BitmapImage UriSource="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=NormalImageUri}"/>
+                                        </core:ChangePropertyAction.Value>
+                                    </core:ChangePropertyAction>
+                                </core:DataTriggerBehavior>
+
+                                <core:DataTriggerBehavior Binding="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=IsEnabled}" Value="False" ComparisonCondition="Equal">
+                                    <core:ChangePropertyAction TargetObject="{Binding ElementName=ThreeStateImage}" PropertyName="Source" >
+                                        <core:ChangePropertyAction.Value>
+                                            <BitmapImage UriSource="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=DisabledImageUri}"/>
+                                        </core:ChangePropertyAction.Value>
+                                    </core:ChangePropertyAction>
+                                </core:DataTriggerBehavior>
+
+                                <core:DataTriggerBehavior Binding="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=IsEnabled}" Value="True" ComparisonCondition="Equal">
+                                    <core:ChangePropertyAction TargetObject="{Binding ElementName=ThreeStateImage}" PropertyName="Source" >
+                                        <core:ChangePropertyAction.Value>
+                                            <BitmapImage UriSource="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=NormalImageUri}"/>
+                                        </core:ChangePropertyAction.Value>
+                                    </core:ChangePropertyAction>
+                                </core:DataTriggerBehavior>
+                            </i:BehaviorCollection>
+                        </i:Interaction.Behaviors>
+                        <Image x:Name="ThreeStateImage" HorizontalAlignment="{TemplateBinding HorizontalAlignment}" VerticalAlignment="{TemplateBinding VerticalAlignment}">
+                        </Image>
+                        <Border Background="White" Opacity="0.0">
+                        </Border>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>

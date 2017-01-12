@@ -1,0 +1,41 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Unicorn"
+    xmlns:controls="using:Unicorn.UI.Xaml.Controls">
+
+    <Style TargetType="controls:WaitDialog">
+        <Setter Property="Background" Value="#99000000"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="controls:WaitDialog">
+                    <Border x:Name="RootBorder"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                        <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <ProgressRing IsActive="True" Background="Transparent" />
+                            <!--<Grid >
+                                <Grid >
+                                <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    -->
+                            <!--<TextBlock Grid.Column="1" x:Name="MessageTextBlock" Margin="15,0,0,0"
+                                               Text="{TemplateBinding Message}"
+                                               TextWrapping="Wrap"
+                                               VerticalAlignment="Center"
+                                               Style="{StaticResource TitleTextBlockStyle}"/>-->
+                            <!--
+                            </Grid>
+                            </Grid>-->
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>
