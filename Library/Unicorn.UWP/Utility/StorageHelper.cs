@@ -877,7 +877,7 @@ namespace Unicorn
                 {
                 }
 #else
-                catch (Exception ex)
+                catch (Exception)
                 {
                 }
 #endif

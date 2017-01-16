@@ -64,7 +64,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\ServiceParameterConverter\TimeSpanParameterConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\Service\BaseHttpService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\Utility\HttpRequestUrlHelper.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\Utility\JsonSerializerSetting.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\Utility\ServiceModelJsonSerializerSettings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\Utility\ServiceModelJsonConvert.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Threading.Tasks.Synchronize\AsyncAutoResetEvent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Threading.Tasks.Synchronize\AsyncBarrier.cs" />

@@ -29,7 +29,7 @@ namespace Unicorn.ServiceModel
     {
         public static T DeserializeObject<T>(string jsonString)
         {
-            return JsonConvert.DeserializeObject<T>(jsonString, DefaultJsonSerializerSettings.Setting);
+            return JsonConvert.DeserializeObject<T>(jsonString, new ServiceModelJsonSerializerSettings());
         }
 
         public static T DeserializeObject<T>(JToken jsonToken)
@@ -39,7 +39,7 @@ namespace Unicorn.ServiceModel
                 return default(T);
             }
 
-            return JsonConvert.DeserializeObject<T>(jsonToken.ToString(), DefaultJsonSerializerSettings.Setting);
+            return JsonConvert.DeserializeObject<T>(jsonToken.ToString(), new ServiceModelJsonSerializerSettings());
         }
 
         public static object DeserializeObject(JToken jsonToken, Type objectType)
@@ -54,12 +54,12 @@ namespace Unicorn.ServiceModel
                 return null;
             }
 
-            return JsonConvert.DeserializeObject(jsonToken.ToString(), objectType, DefaultJsonSerializerSettings.Setting);
+            return JsonConvert.DeserializeObject(jsonToken.ToString(), objectType, new ServiceModelJsonSerializerSettings());
         }
 
         public static string Serialize(object value)
         {
-            return JsonConvert.SerializeObject(value, DefaultJsonSerializerSettings.Setting);
+            return JsonConvert.SerializeObject(value, new ServiceModelJsonSerializerSettings());
         }
     }
 }

@@ -18,29 +18,21 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE
 
+using System;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
 namespace Unicorn.ServiceModel
 {
-    public static class DefaultJsonSerializerSettings
+    public class ServiceModelJsonSerializerSettings : JsonSerializerSettings
     {
-        private static JsonSerializerSettings defaultSetting;
-        public static JsonSerializerSettings Setting
+        public ServiceModelJsonSerializerSettings()
         {
-            get { return defaultSetting; }
+            NullValueHandling = NullValueHandling.Ignore;
+            Error = OnSerailizeError;
         }
 
-        static DefaultJsonSerializerSettings()
-        {
-            defaultSetting = new JsonSerializerSettings
-            {
-                NullValueHandling = NullValueHandling.Ignore,
-                Error = JsonErrorHandler,
-            };
-        }
-
-        private static void JsonErrorHandler(object sender, ErrorEventArgs e)
+        private void OnSerailizeError(object sender, ErrorEventArgs e)
         {
             var errorContext = e.ErrorContext;
             errorContext.Handled = true;
