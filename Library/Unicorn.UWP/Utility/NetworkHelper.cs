@@ -162,7 +162,7 @@ namespace Unicorn
             {
                 foreach (var name in connectionNames)
                 {
-                    if (name.Equals(targetName, StringComparison.OrdinalIgnoreCase))
+                    if (string.Compare(name, targetName, true) == 0)
                     {
                         return true;
                     }
