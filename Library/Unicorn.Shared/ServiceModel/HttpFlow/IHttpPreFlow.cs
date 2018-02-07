@@ -22,9 +22,8 @@ using System.Threading.Tasks;
 
 namespace Unicorn.ServiceModel
 {
-    public interface IHttpPreFlow<TParameter>
-        where TParameter : HttpServiceParameter
+    public interface IHttpPreFlow
     {
-        Task Process(TParameter parameter);
+        Task Process(object parameter);
     }
 }

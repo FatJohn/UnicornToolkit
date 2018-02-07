@@ -19,6 +19,7 @@
 // SOFTWARE
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Unicorn
@@ -47,6 +48,30 @@ namespace Unicorn
             }
 
             return (T)enumValues.GetValue(0);
+        }
+
+        /// <summary>
+        /// Get keys and values of the Enum.
+        /// </summary>
+        /// <param name="enumerationValue">Enum type</param>
+        /// <returns></returns>
+        public static Dictionary<string, Enum> ToDictionary(Type enumType)
+        {
+            var dictionary = new Dictionary<string, Enum>();
+            var enumValues = Enum.GetValues(enumType);
+
+            foreach (var item in enumValues)
+            {
+                var enumItem = ((Enum)item);
+                var enumKeys = enumItem.GetKeys();
+
+                foreach (var key in enumKeys)
+                {
+                    dictionary.Add(key, enumItem);
+                }
+            }
+
+            return dictionary;
         }
     }
 }

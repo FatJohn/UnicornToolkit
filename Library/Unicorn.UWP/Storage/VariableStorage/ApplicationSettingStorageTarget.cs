@@ -104,6 +104,11 @@ namespace Unicorn
 
         public bool ContainsKey(string key)
         {
+            if (string.IsNullOrEmpty(key))
+            {
+                return false;
+            }
+
             return applicationDataContainer.Values.ContainsKey(key);
         }
     }

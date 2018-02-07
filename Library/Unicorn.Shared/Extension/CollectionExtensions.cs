@@ -21,6 +21,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace Unicorn
 {
@@ -49,6 +50,11 @@ namespace Unicorn
             value = default(TValue);
 
             if (dictionary == null)
+            {
+                return false;
+            }
+			
+            if (key == null)
             {
                 return false;
             }
@@ -81,6 +87,11 @@ namespace Unicorn
                 return false;
             }
 
+            if (key == null)
+            {
+                return false;
+            }
+
             if (!dictionary.ContainsKey(key))
             {
                 return false;
@@ -99,6 +110,11 @@ namespace Unicorn
                 return false;
             }
 
+            if (key == null)
+            {
+                return false;
+            }
+
             if (!dictionary.ContainsKey(key))
             {
                 return false;
@@ -112,6 +128,11 @@ namespace Unicorn
         {
             value = default(T);
             if (dictionary == null)
+            {
+                return false;
+            }
+
+            if (key == null)
             {
                 return false;
             }

@@ -35,9 +35,11 @@ namespace Unicorn.ServiceModel
     {
         public override async Task<ParseResult<TResult>> Parse(HttpResponseMessage source)
         {
+            var requestId = source.ReadRequestId();
+
             if (!source.IsSuccessStatusCode)
             {
-                PlatformService.Log?.Trace($"Response Status: ${source.StatusCode} | Url:{source.RequestMessage.RequestUri}");
+                PlatformService.Log?.Trace($"[{requestId}] Response Status: ${source.StatusCode} | Url:{source.RequestMessage.RequestUri}");
                 return new ParseResult<TResult>(new ParseError((int)source.StatusCode, source.StatusCode.ToString()));
             }
 
@@ -50,7 +52,7 @@ namespace Unicorn.ServiceModel
 
             try
             {
-                PlatformService.Log?.Trace($"Response Json | {contentString}");
+                PlatformService.Log?.Trace($"[{requestId}] Response Json: {contentString}");
 
                 var result = ServiceModelJsonConvert.DeserializeObject<TResult>(contentString);
                 return new ParseResult<TResult>(result);

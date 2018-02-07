@@ -443,17 +443,18 @@ namespace Unicorn
         /// <param name="fileName">相對路徑之檔案名稱</param>
         /// <param name="location">AppData的位置</param>
         /// <returns></returns>
-        public static async Task<bool> DeleteFile(string fileName, ApplicationDataLocation location = ApplicationDataLocation.Local)
+        public static async Task<bool> DeleteFile(string fileName, StorageDeleteOption deleteOption = StorageDeleteOption.PermanentDelete, ApplicationDataLocation location = ApplicationDataLocation.Local)
         {
             var file = await GetFile(fileName, location);
             if (file == null)
             {
-                return false;
+                // 檔案不存在，也是 true
+                return true;
             }
 
             try
             {
-                await file.DeleteAsync();
+                await file.DeleteAsync(deleteOption);
                 return true;
             }
 #if DEBUG

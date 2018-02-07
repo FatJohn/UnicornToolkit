@@ -21,6 +21,7 @@
 using System;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
+using System.Linq;
 #if WINDOWS_UWP
 using Windows.Web.Http;
 using Windows.Web.Http.Headers;
@@ -34,6 +35,8 @@ namespace Unicorn.ServiceModel
 {
     public static class HttpRequestCreator
     {
+        private static readonly string requestIdHeaderKey = "X-Request-ID";
+
         public static HttpRequestMessage Create<TParameter>(TParameter parameter, string baseRequestUrl, HttpParameterPackResult packResult)
             where TParameter : HttpServiceParameter
         {
@@ -42,20 +45,28 @@ namespace Unicorn.ServiceModel
             var requestUrl = GetRequestUrl(parameter, baseRequestUrl, packResult.GetCombindedString);
             // 依照 requestUrl 產生 Request Url
             var httpRequest = new HttpRequestMessage(httpMethod, new Uri(requestUrl));
+            // 方便辨識送出的 request
+            httpRequest.Headers.Add(requestIdHeaderKey, Guid.NewGuid().ToString("N"));
             // 加入 Header
             packResult.HeaderParameterMap.ForEach((keyValue) => httpRequest.Headers.Add(keyValue.Key, keyValue.Value));
+            // 加入 Body content
+            CreateHttpContent(httpRequest, packResult);
 
-            if (httpMethod == HttpMethod.Post)
+            if (parameter.HttpContentType != null && httpRequest.Content?.Headers != null)
             {
-                CreatePostContent(httpRequest, packResult);
+#if WINDOWS_UWP
+                httpRequest.Content.Headers.ContentType = new HttpMediaTypeHeaderValue(parameter.HttpContentType);
+#else
+                httpRequest.Content.Headers.ContentType = new MediaTypeHeaderValue(parameter.HttpContentType);
+#endif
             }
 
-            LogParameterPackResult(requestUrl, packResult);
+            LogParameterPackResult(httpRequest, packResult);
 
             return httpRequest;
         }
 
-        private static void LogParameterPackResult(string requestUrl, HttpParameterPackResult packResult)
+        private static void LogParameterPackResult(HttpRequestMessage httpRequest, HttpParameterPackResult packResult)
         {
             var logger = PlatformService.Log;
 
@@ -63,16 +74,36 @@ namespace Unicorn.ServiceModel
             {
                 return;
             }
-
-            logger.Trace($"RequestUrl | {requestUrl}");
+#if WINDOWS_UWP
+            var requestId = httpRequest.Headers[requestIdHeaderKey];
+#else
+            var requestId = httpRequest.Headers.GetValues(requestIdHeaderKey).FirstOrDefault();
+#endif
+            logger.Trace($"[{requestId}] RequestUrl | {httpRequest.RequestUri}");
             packResult.HeaderParameterMap.ForEach((keyValue) =>
             {
-                logger.Trace($"Header Parameters | {keyValue.Key}:{keyValue.Value}");
+                logger.Trace($"[{requestId}] Header Parameters | {keyValue.Key}:{keyValue.Value}");
             });
-            packResult.PostParameterMap.ForEach((keyValue) =>
+
+            if (packResult.PostParameterMap.Count > 0)
             {
-                logger.Trace($"Post Parameters | {keyValue.Key}:{keyValue.Value}");
-            });
+                string postContet = string.Empty;
+                packResult.PostParameterMap.ForEach((keyValue) =>
+                {
+                    postContet += $"{keyValue.Key}={keyValue.Value}&";
+                });
+                logger.Trace($"[{requestId}] Content | {postContet.Remove(postContet.Length - 1)}");
+            }
+
+            if (packResult.PostRawStringList.Count > 0)
+            {
+                StringBuilder rawStringBuilder = new StringBuilder();
+                packResult.PostRawStringList.ForEach((rawString) =>
+                {
+                    rawStringBuilder.AppendLine(rawString);
+                });
+                logger.Trace($"[{requestId}] Content | {rawStringBuilder.ToString()}");
+            }
         }
 
         private static HttpMethod GetHttpMethod<TParameter>(TParameter parameter, HttpParameterPackResult packResult)
@@ -116,7 +147,7 @@ namespace Unicorn.ServiceModel
             return result;
         }
 
-        private static void CreatePostContent(HttpRequestMessage httpRequest, HttpParameterPackResult packResult)
+        private static void CreateHttpContent(HttpRequestMessage httpRequest, HttpParameterPackResult packResult)
         {
             // 三種 POST 的狀況只會執行其中一種，是互斥的
             if (packResult.MutliPartParameterMap.Count > 0)
@@ -167,7 +198,7 @@ namespace Unicorn.ServiceModel
                 httpRequest.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
 #endif
             }
-            else
+            else if (packResult.PostParameterMap.Count > 0)
             {
 #if WINDOWS_UWP
                 httpRequest.Content = new HttpFormUrlEncodedContent(packResult.PostParameterMap);
@@ -192,17 +223,17 @@ namespace Unicorn.ServiceModel
         private static string GetRequestUrl<TParameter>(TParameter parameter, string baseRequestUrl, string getParameterString)
             where TParameter : HttpServiceParameter
         {
-            if (string.IsNullOrEmpty(parameter.RequestUrl))
+            if (string.IsNullOrEmpty(parameter.Options.Url.CustomUrl))
             {
                 return HttpRequestUrlHelper.GetRequestUrl(baseRequestUrl, getParameterString);
             }
 
-            if (!parameter.IsCompletedRequestUrl)
+            if (parameter.Options.Url.IsByPassAutoGenerateUrl == false)
             {
-                return HttpRequestUrlHelper.GetRequestUrl(parameter.RequestUrl, getParameterString);
+                return HttpRequestUrlHelper.GetRequestUrl(parameter.Options.Url.CustomUrl, getParameterString);
             }
 
-            return parameter.RequestUrl;
+            return parameter.Options.Url.CustomUrl;
         }
     }
 }

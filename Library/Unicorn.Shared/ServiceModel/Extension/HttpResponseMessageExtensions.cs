@@ -21,6 +21,7 @@
 using System;
 using System.Text;
 using System.Threading.Tasks;
+using System.Linq;
 #if WINDOWS_UWP
 using Windows.Web.Http;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -52,6 +53,15 @@ namespace Unicorn
             var contentBytes = await source.Content.ReadAsByteArrayAsync();
 #endif
             return Encoding.UTF8.GetString(contentBytes, 0, contentBytes.Length);
+        }
+
+        public static string ReadRequestId(this HttpResponseMessage source)
+        {
+#if WINDOWS_UWP
+            return source.RequestMessage.Headers["X-Request-ID"];
+#else
+            return source.RequestMessage.Headers.GetValues("X-Request-ID").FirstOrDefault();
+#endif
         }
     }
 }

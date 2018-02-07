@@ -38,6 +38,11 @@ namespace Unicorn
         string OperationSystemVersion { get; }
 
         /// <summary>
+        /// 作業系統組建
+        /// </summary>
+        ulong OperationSystemBuild { get; }
+
+        /// <summary>
         /// 系統製造商
         /// </summary>
         string SystemManufacturer { get; }
@@ -76,5 +81,15 @@ namespace Unicorn
         /// 記憶體限制 (MB)
         /// </summary>
         ulong MemoryLimit { get; }
+
+        /// <summary>
+        /// 記憶體使用中用量 (MB)
+        /// </summary>
+        ulong MemoryUsage { get; }
+
+        /// <summary>
+        /// 記憶體使用中比例 (%)
+        /// </summary>
+        ulong MemoryUsageRatio { get; }
     }
 }

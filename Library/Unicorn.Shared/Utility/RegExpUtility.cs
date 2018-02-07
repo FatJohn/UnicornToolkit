@@ -100,5 +100,18 @@ namespace Unicorn
                 return string.Empty;
             }
         }
+
+        public static string GetNumber(string input)
+        {
+            const string pattern = "\\d+";
+            try
+            {
+                return Regex.Match(input, pattern).Value;
+            }
+            catch (Exception)
+            {
+                return string.Empty;
+            }
+        }
     }
 }

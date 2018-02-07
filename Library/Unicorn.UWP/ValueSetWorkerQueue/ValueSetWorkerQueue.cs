@@ -77,16 +77,12 @@ namespace Unicorn
 
         public void Submit(ValueSet valueSet)
         {
-            int count;
-
             lock (queue)
             {
-                count = queue.Count;
-
                 queue.Enqueue(valueSet);
             }
 
-            if (0 == count)
+            if (signalTask.IsActive == false)
             {
                 signalTask.Fire();
             }

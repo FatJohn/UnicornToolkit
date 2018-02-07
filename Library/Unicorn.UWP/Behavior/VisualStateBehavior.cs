@@ -46,7 +46,7 @@ namespace Unicorn
                 return;
             }
 
-            var issuccess = VisualStateManager.GoToState(behavior.AssociatedObject as Control, e.NewValue.ToString(), true);
+            var issuccess = VisualStateManagerHelper.GoToState(behavior.AssociatedObject as Control, e.NewValue.ToString(), true);
         }
 
         public void Attach(DependencyObject associatedObject)

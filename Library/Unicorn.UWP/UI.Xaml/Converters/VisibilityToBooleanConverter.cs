@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2016 John Shu
+﻿// Copyright (c) 2017 Louis Wu
 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -18,53 +18,30 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE
 
-using Windows.Networking;
-using Windows.Networking.Connectivity;
+using System;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Data;
 
 namespace Unicorn
 {
-    public class NetowrkInformationService : INetowrkInformationService
+    public class VisibilityToBooleanConverter : IValueConverter
     {
-        public string GetIpAddress()
+        public object Convert(object value, Type targetType, object parameter, string language)
         {
-            var connectionProfile = NetworkInformation.GetInternetConnectionProfile();
-            if (connectionProfile == null)
+            if (value == null)
             {
-                return string.Empty;
+                return false;
             }
-
-            if (connectionProfile.NetworkAdapter == null)
+            else
             {
-                return string.Empty;
+                Visibility visibilityValue = (Visibility)value;
+                return visibilityValue == Visibility.Visible;
             }
-
-            string ipAddress = string.Empty;
-            var hostNames = NetworkInformation.GetHostNames();
-            foreach (var hostName in hostNames)
-            {
-                if (hostName.IPInformation == null)
-                {
-                    continue;
-                }
-
-                if (hostName.Type != HostNameType.Ipv4)
-                {
-                    continue;
-                }
-
-                ipAddress = hostName.CanonicalName;
-                break;
-            }
-
-            return ipAddress;
         }
 
-        public bool IsNetworkAvailable
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
         {
-            get
-            {
-                return NetworkHelper.IsNetworkAvailable;
-            }
+            throw new NotImplementedException();
         }
     }
 }

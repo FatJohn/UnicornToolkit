@@ -103,15 +103,12 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
-    <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
-    <None Include="project.json" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Behavior\OddBehavior.cs" />
     <Compile Include="Behavior\VisualStateBehavior.cs" />
     <Compile Include="Extension\ApplicationExtensions.cs" />
     <Compile Include="Extension\BitmapImageExtensions.cs" />
     <Compile Include="Extension\CompositorAnimationExtension.cs" />
+    <Compile Include="Extension\ImageExtension.cs" />
     <Compile Include="Extension\ListViewBaseExtention.cs" />
     <Compile Include="Extension\MessageDialogExtensions.cs" />
     <Compile Include="Extension\PlaybackMediaMarkerSequenceExtensions.cs" />
@@ -128,7 +125,6 @@
     <Compile Include="PlatformService\DeviceInformationService.cs" />
     <Compile Include="PlatformService\DispatcherService.cs" />
     <Compile Include="PlatformService\NetowrkInformationService.cs" />
-    <Compile Include="PlatformService\NullLogService.cs" />
     <Compile Include="PlatformService\PlatformFile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Storage\FileWatcher.cs" />
@@ -142,6 +138,7 @@
     <Compile Include="UI.Xaml\Controls\ThreeStateImageButton\ThreeStateImageButton.cs" />
     <Compile Include="UI.Xaml\Controls\ThreeStateImageButton\ThreeStateImageButtonState.cs" />
     <Compile Include="UI.Xaml\Controls\WaitDialog\WaitDialog.cs" />
+    <Compile Include="UI.Xaml\Converters\BooleanToDoubleConverter.cs" />
     <Compile Include="UI.Xaml\Converters\BooleanToThicknessConverter.cs" />
     <Compile Include="UI.Xaml\Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="UI.Xaml\Converters\ColorContrastConverter.cs" />
@@ -151,17 +148,24 @@
     <Compile Include="UI.Xaml\Converters\InverseNumberConverter.cs" />
     <Compile Include="UI.Xaml\Converters\MillisecondToStringConverter.cs" />
     <Compile Include="UI.Xaml\Converters\MultiplicationConverter.cs" />
+    <Compile Include="UI.Xaml\Converters\NullToBooleanConverter.cs" />
     <Compile Include="UI.Xaml\Converters\NullToVisibilityConverter.cs" />
+    <Compile Include="UI.Xaml\Converters\NumberToVisibilityConverter.cs" />
     <Compile Include="UI.Xaml\Converters\PositionConverter.cs" />
     <Compile Include="UI.Xaml\Converters\ResourceToStringConveter.cs" />
+    <Compile Include="UI.Xaml\Converters\ReverseBooleanConverter.cs" />
     <Compile Include="UI.Xaml\Converters\ReverseBooleanToVisibilityConverter.cs" />
+    <Compile Include="UI.Xaml\Converters\ReverseIEnumerableToVisibilityConverter.cs" />
     <Compile Include="UI.Xaml\Converters\ReverseNullToVisibilityConverter.cs" />
+    <Compile Include="UI.Xaml\Converters\ReverseNumberToVisibilityConverter.cs" />
     <Compile Include="UI.Xaml\Converters\ReverseVisibilityConverter.cs" />
     <Compile Include="UI.Xaml\Converters\StringFormatConverter.cs" />
     <Compile Include="UI.Xaml\Converters\StringToBooleanConverter.cs" />
     <Compile Include="UI.Xaml\Converters\StringToIntConverter.cs" />
     <Compile Include="UI.Xaml\Converters\StringToVisibilityConverter.cs" />
     <Compile Include="UI.Xaml\Converters\TargetStringToVisibilityConverter.cs" />
+    <Compile Include="UI.Xaml\Converters\VisibilityToDoubleConverter.cs" />
+    <Compile Include="UI.Xaml\Converters\VisibilityToBooleanConverter.cs" />
     <Compile Include="Utility\AnalyticsInfoUtility.cs" />
     <Compile Include="Utility\CompositionAnimationUtility.cs" />
     <Compile Include="Utility\DataBindingHelper.cs" />
@@ -173,13 +177,13 @@
     <Compile Include="Utility\NetworkHelper.cs" />
     <Compile Include="Utility\PopupUtility.cs" />
     <Compile Include="Utility\StorageHelper.cs" />
+    <Compile Include="Utility\VisualStateManagerHelper.cs" />
     <Compile Include="Utility\VisualTreeManager.cs" />
     <Compile Include="Utility\WaitDialogUtility.cs" />
     <Compile Include="Utility\ZipArchiveUtility.cs" />
     <Compile Include="ValueSetWorkerQueue\ValueSetWorkerQueue.cs" />
     <EmbeddedResource Include="Properties\Unicorn.UWP.rd.xml" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Page Include="themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -199,6 +203,14 @@
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
+  <PropertyGroup>
+    <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform" Version="6.0.6" />
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Uwp.Managed" Version="2.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
+  </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
