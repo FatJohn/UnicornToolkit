@@ -26,7 +26,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)PlatformService\ICryptographyService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PlatformService\IDeviceInformationService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PlatformService\IDispatcherService.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)PlatformService\IFileService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PlatformService\ILogService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PlatformService\INetowrkService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PlatformService\NullLogService.cs" />
@@ -81,7 +80,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Threading.Tasks\TplTaskExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utility\Convert2.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utility\EnumHelper.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Utility\JsonIoUtility.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utility\RegExpUtility.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utility\UnixDateTimeConverter.cs" />
   </ItemGroup>

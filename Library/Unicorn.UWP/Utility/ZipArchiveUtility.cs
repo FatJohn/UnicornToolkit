@@ -33,15 +33,14 @@ namespace Unicorn
         /// <returns></returns>
         public static async Task ExtractAsync(string sourceFilePath, string destinationFolder)
         {
-            var file = PlatformService.File;
-            var zipFileStream = await file.OpenReadStreamAsync(sourceFilePath);
+            var zipFileStream = await StorageHelper.OpenReadStream(sourceFilePath, false);
             var zipArchive = new ZipArchive(zipFileStream, ZipArchiveMode.Read);
 
             foreach (var zipEntry in zipArchive.Entries)
             {
                 var zipEntryFileStream = zipEntry.Open();
                 var fileName = string.Format(@"{0}\{1}", destinationFolder, zipEntry.FullName);
-                var decompressStream = await file.OpenWriteStreamAsync(fileName);
+                var decompressStream = await StorageHelper.OpenWriteStream(fileName);
                 await zipEntryFileStream.CopyToAsync(decompressStream);
                 await decompressStream.FlushAsync();
 
