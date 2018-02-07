@@ -99,12 +99,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Library\Unicorn.DotNet\Unicorn.DotNet.csproj">
-      <Project>{82b5a836-f71f-481f-8140-0d9ebad8bf43}</Project>
-      <Name>Unicorn.DotNet</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
