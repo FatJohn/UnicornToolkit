@@ -19,11 +19,25 @@
 // SOFTWARE
 
 using System;
+using System.Net.NetworkInformation;
+using System.Runtime.InteropServices;
 
 namespace Unicorn
 {
     public class NetowrkInformationService : INetowrkInformationService
     {
+        [DllImport("wininet")]
+        public static extern bool InternetGetConnectedState(ref uint flags, uint reserved);
+
+        public bool IsNetworkAvailable
+        {
+            get
+            {
+                uint flags = 0x0;
+                return InternetGetConnectedState(ref flags, 0);
+            }
+        }
+
         public string GetIpAddress()
         {
             throw new NotImplementedException();

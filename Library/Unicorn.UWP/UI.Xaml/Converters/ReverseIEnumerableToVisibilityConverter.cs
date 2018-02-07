@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2016 John Shu
+﻿// Copyright (c) 2017 Louis Wu
 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -19,57 +19,24 @@
 // SOFTWARE
 
 using System;
-using Windows.ApplicationModel.Resources;
+using System.Collections.Generic;
+using System.Linq;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Data;
 
 namespace Unicorn
 {
-    public class ResourceManager
+    public class ReverseIEnumerableToVisibilityConverter : IValueConverter
     {
-        private static ResourceLoader defaultResourceLoader;
-        public static ResourceLoader Default
+        public object Convert(object value, Type targetType, object parameter, string language)
         {
-            get
-            {
-                if (defaultResourceLoader == null)
-                {
-                    defaultResourceLoader = new ResourceLoader();
-                }
-
-                return defaultResourceLoader;
-            }
-            set
-            {
-                if (value != null)
-                {
-                    defaultResourceLoader = value;
-                }
-            }
+            var sourceCollection = value as IEnumerable<object>;
+            return (sourceCollection?.Count() > 0) ? Visibility.Collapsed : Visibility.Visible;
         }
 
-        public static string GetString(string id)
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
         {
-            try
-            {
-                return Default?.GetString(id) ?? string.Empty;
-            }
-            catch (Exception)
-            {
-                return string.Empty;
-            }
-        }
-
-        public static T GetApplicationResource<T>(string id)
-        {
-            return (T)Application.Current.Resources[id];
-        }
-
-        public string this[string key]
-        {
-            get
-            {
-                return GetString(key);
-            }
+            throw new NotImplementedException();
         }
     }
 }

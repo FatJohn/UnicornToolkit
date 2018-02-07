@@ -23,5 +23,7 @@ namespace Unicorn
     public interface INetowrkInformationService
     {
         string GetIpAddress();
+
+        bool IsNetworkAvailable { get; }
     }
 }

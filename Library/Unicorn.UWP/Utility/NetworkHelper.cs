@@ -173,43 +173,20 @@ namespace Unicorn
         }
 
         /// <summary>
-        /// 正在用 3G/4G 上網
-        /// </summary>
-        public static bool GetCurrentConnectionIsWwan()
-        {
-            return NetworkInformation.GetInternetConnectionProfile().IsWwanConnectionProfile;
-        }
-
-        /// <summary>
-        /// 正在用 wifi 連線
+        /// 檢查目前的連線中的連線有非 3G/4G 的網路的
+        /// 理論上 windows 會使用非 WWan 連線優先當上網的
         /// </summary>
         /// <returns></returns>
-        public static async Task<bool> IsWiFiEnabled()
+        public static async Task<bool> CheckIsNoneWwanConnected()
         {
-            //Get the Internet connection profile
-            string ssid = string.Empty;
-            ConnectionProfileFilter filter = new ConnectionProfileFilter();
-            filter.IsConnected = true;
-            filter.IsWlanConnectionProfile = true;
+            // 找到連線了，但不是 WWAN 的 profile
+            ConnectionProfileFilter filter = new ConnectionProfileFilter
+            {
+                IsConnected = true,
+                IsWwanConnectionProfile = false,
+            };
             var result = await NetworkInformation.FindConnectionProfilesAsync(filter);
-            if (result.Count > 0)
-            {
-                foreach (var profile in result)
-                {
-                    if (profile.IsWlanConnectionProfile)
-                    {
-                        ssid += profile.WlanConnectionProfileDetails.GetConnectedSsid();
-                    }
-                }
-            }
-            if (string.IsNullOrEmpty(ssid))
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
+            return result.Count > 0;
         }
 
         /// <summary>
@@ -262,24 +239,21 @@ namespace Unicorn
         /// </summary>
         public static async Task<string> GetNetworkType()
         {
-            if (await IsWiFiEnabled())
+            // 非 3G/4G 連線一律回傳 wifi
+            if (await CheckIsNoneWwanConnected())
             {
                 return "wifi";
             }
-            else
+
+            var mobile = GetMobileOperator();
+            var type = mobile.Item3;
+
+            if (type == WwanDataClass.LteAdvanced)
             {
-                var mobile = GetMobileOperator();
-                var type = mobile.Item3;
-                mobile = null;
-                if (type == WwanDataClass.Hsdpa)
-                {
-                    return "3G";
-                }
-                else
-                {
-                    return "4G";
-                }
+                return "4G";
             }
+
+            return "3G";
         }
     }
 
@@ -290,10 +264,5 @@ namespace Unicorn
         Chunghwa,
         AIS,
         DTAC
-    }
-
-    public enum WwanType
-    {
-        Unknow,
     }
 }

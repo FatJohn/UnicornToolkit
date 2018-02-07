@@ -45,36 +45,21 @@ namespace Unicorn.ServiceModel
         }
 
         /// <summary>
-        /// 當 Service 發現此欄位有值時，就會使用此欄位的值當作發送的 URL
-        /// </summary>
-        [JsonIgnore]
-        [HttpIgnore]
-        public string RequestUrl { get; set; }
-
-        /// <summary>
-        /// 是否為完整的 RequestUrl, true 則不會跑組合參數的流程, 預設是 false
-        /// 當 RequestUrl 有值的時候才有作用
-        /// </summary>
-        [JsonIgnore]
-        [HttpIgnore]
-        public bool IsCompletedRequestUrl { get; set; }
-
-        [JsonIgnore]
-        [HttpIgnore]
-        public bool IsEnableCache { get; set; } = false;
-
-        /// <summary>
-        /// Cache 的時間. 預設值是 0, 小於等於0即便把 IsEnableCache 啟動也是會重新抓資料
-        /// </summary>
-        [JsonIgnore]
-        [HttpIgnore]
-        public int CacheMinutes { get; set; } = 0;
-
-        /// <summary>
         /// 可以指定這次 Parameter 要用的 Http Method, 預設是不指定自動在 Get / Post 判斷
         /// </summary>
         [JsonIgnore]
         [HttpIgnore]
         public HttpParameterMethod HttpMethod { get; set; } = HttpParameterMethod.NotSpecific;
+
+        /// <summary>
+        /// 指定 Http content-type
+        /// </summary>
+        [JsonIgnore]
+        [HttpIgnore]
+        public string HttpContentType { get; set; }
+
+        [JsonIgnore]
+        [HttpIgnore]
+        public HttpServiceParameterOption Options { get; private set; } = new HttpServiceParameterOption();
     }
 }

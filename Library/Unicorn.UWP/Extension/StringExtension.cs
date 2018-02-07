@@ -139,7 +139,7 @@ namespace Unicorn
 
         public static int[] ToMobileCountryCode(this string content)
         {
-            Regex regex = new Regex("[^0-9.-]");
+            Regex regex = new Regex("[0-9.-]");
             int[] codes = new int[] { 0, 0 };
             if (string.IsNullOrEmpty(content) == false && content.Length >= 5 && regex.IsMatch(content))
             {
@@ -147,6 +147,16 @@ namespace Unicorn
                 codes[1] = int.Parse(content.Substring(4));
             }
             return codes;
+        }
+
+        public static string SubstringByMaxLength(this string content, int maxLength)
+        {
+            if (content == null || maxLength <= 0 || maxLength > content.Length)
+            {
+                return content;
+            }
+
+            return content.Substring(0, maxLength);
         }
     }
 }

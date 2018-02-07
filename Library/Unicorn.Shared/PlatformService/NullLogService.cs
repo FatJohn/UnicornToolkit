@@ -19,7 +19,9 @@
 // SOFTWARE
 
 using System;
+using System.IO;
 using System.Runtime.CompilerServices;
+using System.Text;
 
 namespace Unicorn
 {
@@ -27,17 +29,44 @@ namespace Unicorn
     {
         public void Debug(string content = "", [CallerMemberName] string callerMemberName = "", [CallerFilePath] string sourceFilePath = "", [CallerLineNumber] int sourceLineNumber = 0)
         {
-            // do nothing
+            System.Diagnostics.Debug.WriteLine(GetGeneralString("DEBUG", content, callerMemberName, sourceFilePath, sourceLineNumber));
         }
 
         public void Error(Exception exception = null, string content = "", [CallerMemberName] string callerMemberName = "", [CallerFilePath] string sourceFilePath = "", [CallerLineNumber] int sourceLineNumber = 0)
         {
-            // do nothing
+            System.Diagnostics.Debug.WriteLine(GetGeneralString("ERROR", string.Empty, callerMemberName, sourceFilePath, sourceLineNumber), exception);
         }
 
         public void Trace(string content = "", [CallerMemberName] string callerMemberName = "", [CallerFilePath] string sourceFilePath = "", [CallerLineNumber] int sourceLineNumber = 0)
         {
-            // do nothing
+            System.Diagnostics.Debug.WriteLine(GetGeneralString("TRACE", content, callerMemberName, sourceFilePath, sourceLineNumber));
+        }
+
+        private string GetGeneralString(string level, string content, string callerMemberName, string filePath, int lineNumber, Exception ex = null)
+        {
+            StringBuilder builder = new StringBuilder();
+            builder.Append(DateTime.Now.ToLocalTime().ToString("HH:mm:ss:fff"));
+            builder.Append(" | ");
+            builder.Append(level);
+            builder.Append(" | ");
+            builder.Append($"{Path.GetFileName(filePath)} | {callerMemberName} | {lineNumber}");
+
+            if (string.IsNullOrEmpty(content) == false)
+            {
+                builder.Append(" | ");
+                builder.Append(content);
+            }
+
+            if (ex != null)
+            {
+                builder.AppendLine("=== Exception ===");
+                builder.AppendLine($"HResult : {ex.HResult}");
+                builder.AppendLine($"Source : {ex.Source}");
+                builder.AppendLine($"Message : {ex.Message}");
+                builder.AppendLine("=== Exception ===");
+            }
+
+            return builder.ToString();
         }
     }
 }

@@ -49,7 +49,7 @@ namespace Unicorn.UI.Xaml
             Control c = sender as Control;
             if (c != null)
             {
-                bool b = VisualStateManager.GoToState(c, (string)args.NewValue, false);
+                bool b = VisualStateManagerHelper.GoToState(c, (string)args.NewValue, false);
             }
 #if DEBUG
             else

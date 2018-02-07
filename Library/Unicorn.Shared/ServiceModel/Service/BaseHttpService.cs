@@ -51,7 +51,7 @@ namespace Unicorn.ServiceModel
         /// <summary>
         /// 發送 Request 前的前置處理步驟
         /// </summary>
-        public List<IHttpPreFlow<TParameter>> PreProcessFlow { get; } = new List<IHttpPreFlow<TParameter>>();
+        public List<IHttpPreFlow> PreProcessFlow { get; } = new List<IHttpPreFlow>();
 
 #if WINDOWS_UWP
         private WeakReference<HttpServiceProgressCallback> sendProgressCallbackReference;
@@ -99,27 +99,29 @@ namespace Unicorn.ServiceModel
         }
 #endif
 
-        public BaseHttpService()
+        protected BaseHttpService()
         {
         }
 
         public virtual async Task<ParseResult<TResult>> InvokeAsync(TParameter parameter, CancellationTokenSource cancellationTokenSource = null)
         {
             this.cancellationTokenSource = cancellationTokenSource;
-            var taskCompletionSource = new TaskCompletionSource<ParseResult<TResult>>();
-
-            var invokeTask = Task.Run(async () =>
+            var cancellationToken = cancellationTokenSource?.Token ?? CancellationToken.None;
+            try
             {
-                var result = await Invoke(parameter).ConfigureAwait(false);
-                taskCompletionSource.TrySetResult(result);
-            });
-
-            return await taskCompletionSource.Task.ConfigureAwait(false);
+                return await Task.Run(() => Invoke(parameter), cancellationToken).ConfigureAwait(false);
+            }
+            catch (ObjectDisposedException)
+            {
+                // 根據微軟文件 Task.Run 如果使用的 cancellationToken 已經被 Dispose 的話就會觸發此 Exception
+                // 當此情況發生就是當作已經 cancel 了
+                return new ParseResult<TResult>(new ParseError(true));
+            }
         }
 
         protected virtual Task<ParseResult<TResult>> Invoke(TParameter parameter)
         {
-            if (parameter.IsEnableCache && parameter.CacheMinutes > 0)
+            if (parameter.Options.Cache.IsEnable && parameter.Options.Cache.Minutes > 0)
             {
                 return CacheInvoke(parameter);
             }
@@ -268,7 +270,7 @@ namespace Unicorn.ServiceModel
         private bool IsValidCacheTime(TParameter parameter, long cacheTimeTicks)
         {
             var cacheTime = new DateTime(cacheTimeTicks);
-            return (DateTime.Now.Subtract(cacheTime).TotalMinutes < parameter.CacheMinutes);
+            return (DateTime.Now.Subtract(cacheTime).TotalMinutes < parameter.Options.Cache.Minutes);
         }
 
         #endregion
@@ -277,8 +279,15 @@ namespace Unicorn.ServiceModel
 
         protected virtual async Task<ParseResult<TResult>> RemoteInvoke(TParameter parameter)
         {
+            HttpResponseMessage httpResponse = null;
+
             try
             {
+                if (PlatformService.NetworkInformation.IsNetworkAvailable == false)
+                {
+                    return new ParseResult<TResult>(new ParseError(true));
+                }
+
                 await PreProcess(parameter).ConfigureAwait(false);
 
                 var requestUrl = CreateRequestUri(parameter);
@@ -286,11 +295,8 @@ namespace Unicorn.ServiceModel
                 // 1. pack HttpPackResult
                 var packResult = HttpParameterPacker.CreatePackedParameterResult(parameter);
 
-                // 2. create HttpRequestMessage
-                var httpRequest = PackParameterToHttpReqeustMessage(parameter, requestUrl, packResult);
-
-                // 3. Send & Get response
-                var httpResponse = await SendRequest(httpRequest).ConfigureAwait(false);
+                // 2. Send & Get response
+                httpResponse = await SendRequest(parameter, () => PackParameterToHttpReqeustMessage(parameter, requestUrl, packResult)).ConfigureAwait(false);
 
                 if (httpResponse == null)
                 {
@@ -298,27 +304,17 @@ namespace Unicorn.ServiceModel
                 }
 
                 // 4. Save cache
-                if (parameter.IsEnableCache && parameter.CacheMinutes > 0)
+                if (parameter.Options.Cache.IsEnable && parameter.Options.Cache.Minutes > 0)
                 {
                     await SaveCache(parameter, requestUrl, packResult, httpResponse).ConfigureAwait(false);
                 }
 
                 if (cancellationTokenSource?.IsCancellationRequested == true)
                 {
-                    httpResponse.Content.Dispose();
-                    httpResponse.Dispose();
-
                     return new ParseResult<TResult>(new ParseError(true));
                 }
 
                 var parseResult = await ParseResponse(httpResponse).ConfigureAwait(false);
-
-                // 5. free resource
-                if (httpResponse != null)
-                {
-                    httpResponse.Content.Dispose();
-                    httpResponse.Dispose();
-                }
 
                 if (cancellationTokenSource?.IsCancellationRequested == true)
                 {
@@ -331,6 +327,15 @@ namespace Unicorn.ServiceModel
             {
                 return new ParseResult<TResult>(new ParseError(ex.Message));
             }
+            finally
+            {
+                if (httpResponse != null)
+                {
+                    httpResponse.Content?.Dispose();
+                    httpResponse.Dispose();
+                    httpResponse = null;
+                }
+            }
         }
 
         protected abstract string CreateRequestUri(TParameter parameter);
@@ -338,6 +343,36 @@ namespace Unicorn.ServiceModel
         protected virtual HttpRequestMessage PackParameterToHttpReqeustMessage(TParameter parameter, string requestUrl, HttpParameterPackResult packResult)
         {
             return HttpRequestCreator.Create(parameter, requestUrl, packResult);
+        }
+
+        protected virtual async Task<HttpResponseMessage> SendRequest(TParameter parameter, Func<HttpRequestMessage> httpRequestMessageDelegate)
+        {
+            var retryControl = parameter.Options.Retry;
+            var retryRemain = retryControl.MaxRetryTimes;
+            HttpResponseMessage httpResponse = null;
+
+            do
+            {
+                var httpRequestMessage = httpRequestMessageDelegate();
+                httpResponse = await SendRequest(httpRequestMessage).ConfigureAwait(false);
+                if (cancellationTokenSource != null && cancellationTokenSource.IsCancellationRequested)
+                {
+                    break;
+                }
+
+                if (httpResponse != null && httpResponse.IsSuccessStatusCode)
+                {
+                    break;
+                }
+
+                if (retryRemain > 0)
+                {
+                    await Task.Delay(retryControl.Interval).ConfigureAwait(false);
+                }
+            }
+            while (retryRemain-- > 0);
+
+            return httpResponse;
         }
 
         protected virtual async Task<HttpResponseMessage> SendRequest(HttpRequestMessage httpRequestMessage)
@@ -365,7 +400,7 @@ namespace Unicorn.ServiceModel
             {
                 return await asyncOperationWithProgress;
             }
-            catch (OperationCanceledException)
+            catch (Exception)
             {
                 return null;
             }
@@ -375,7 +410,7 @@ namespace Unicorn.ServiceModel
                 var cancellationToken = cancellationTokenSource == null ? CancellationToken.None : cancellationTokenSource.Token;
                 return await httpClient.SendAsync(httpRequestMessage, HttpCompletionOption.ResponseContentRead, cancellationToken);
             }
-            catch (OperationCanceledException)
+            catch (Exception)
             {
                 return null;
             }

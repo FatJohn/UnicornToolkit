@@ -30,8 +30,6 @@ namespace Unicorn
 {
     public class DeviceInformationService : IDeviceInformationService
     {
-        private readonly EasClientDeviceInformation deviceInformation = null;
-
         private string deviceUniqeId;
         public string UniqueId
         {
@@ -73,7 +71,8 @@ namespace Unicorn
 
         public string OperatingSystem
         {
-            get { return deviceInformation.OperatingSystem; }
+            get;
+            private set;
         }
 
         private static string operatingSystemVersion;
@@ -95,19 +94,38 @@ namespace Unicorn
             }
         }
 
+        private ulong operationSystemBuild = 0;
+        public ulong OperationSystemBuild
+        {
+            get
+            {
+                if (operationSystemBuild > 0)
+                {
+                    return operationSystemBuild;
+                }
+
+                var analyticsInfoUtility = new AnalyticsInfoUtility();
+                operationSystemBuild = analyticsInfoUtility.GetDeviceFamilyVersion().Build;
+                return operationSystemBuild;
+            }
+        }
+
         public string SystemManufacturer
         {
-            get { return deviceInformation.SystemManufacturer; }
+            get;
+            private set;
         }
 
         public string Name
         {
-            get { return deviceInformation.FriendlyName; }
+            get;
+            private set;
         }
 
         public string ModelName
         {
-            get { return deviceInformation.SystemProductName; }
+            get;
+            private set;
         }
 
         public string DeviceFamily
@@ -146,9 +164,42 @@ namespace Unicorn
             }
         }
 
+        public ulong MemoryUsage
+        {
+            get
+            {
+                try
+                {
+                    var usage = MemoryManager.AppMemoryUsage / 1024 / 1024;
+                    return usage;
+                }
+                catch (Exception)
+                {
+                    return 0;
+                }
+            }
+        }
+
+        public ulong MemoryUsageRatio
+        {
+            get
+            {
+                if (MemoryLimit == 0)
+                {
+                    return 0;
+                }
+
+                return MemoryUsage / MemoryLimit;
+            }
+        }
+
         public DeviceInformationService()
         {
-            deviceInformation = new EasClientDeviceInformation();
+            var deviceInformation = new EasClientDeviceInformation();
+            OperatingSystem = deviceInformation.OperatingSystem;
+            SystemManufacturer = deviceInformation.SystemManufacturer;
+            Name = deviceInformation.FriendlyName;
+            ModelName = deviceInformation.SystemProductName;
         }
     }
 }

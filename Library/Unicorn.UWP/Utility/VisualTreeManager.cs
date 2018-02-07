@@ -72,27 +72,43 @@ namespace Unicorn
 
         public static void GetVisualChildCollection<T>(this DependencyObject parent, List<T> visualCollection) where T : DependencyObject
         {
-            int count = VisualTreeHelper.GetChildrenCount(parent);
+            int count = 0;
+
+            try
+            {
+                count = VisualTreeHelper.GetChildrenCount(parent);
+            }
+            catch (Exception)
+            {
+                return;
+            }
+
             for (int i = 0; i < count; i++)
             {
-                DependencyObject child = VisualTreeHelper.GetChild(parent, i);
-                if (child is Windows.UI.Xaml.Controls.Panel && child is T)
+                try
                 {
-                    // 當目標 Control 為 Panel 時，除了要把它加進 Collection 內之外，還要繼續檢查它的 child
-                    T gottenChild = child as T;
-                    if (gottenChild != null)
+                    DependencyObject child = VisualTreeHelper.GetChild(parent, i);
+                    if (child is Windows.UI.Xaml.Controls.Panel && child is T)
                     {
-                        visualCollection.Add(gottenChild);
+                        // 當目標 Control 為 Panel 時，除了要把它加進 Collection 內之外，還要繼續檢查它的 child
+                        T gottenChild = child as T;
+                        if (gottenChild != null)
+                        {
+                            visualCollection.Add(gottenChild);
+                        }
+                        GetVisualChildCollection(child, visualCollection);
                     }
-                    GetVisualChildCollection(child, visualCollection);
+                    if (child is T)
+                    {
+                        visualCollection.Add(child as T);
+                    }
+                    else if (child != null)
+                    {
+                        GetVisualChildCollection(child, visualCollection);
+                    }
                 }
-                if (child is T)
+                catch (Exception)
                 {
-                    visualCollection.Add(child as T);
-                }
-                else if (child != null)
-                {
-                    GetVisualChildCollection(child, visualCollection);
                 }
             }
         }

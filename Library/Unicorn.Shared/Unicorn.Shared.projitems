@@ -29,6 +29,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)PlatformService\IFileService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PlatformService\ILogService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PlatformService\INetowrkService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PlatformService\NullLogService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PlatformService\PlatformService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\Attribute\HttpIgnoreAttribute.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\Attribute\HttpMultiPartPropertyAttribute.cs" />
@@ -45,6 +46,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\JsonConverter\EnumKeyJsonKeywordConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\JsonConverter\Int32JsonConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\JsonConverter\IntToEnumJsonConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\JsonConverter\ListEnumKeyJsonConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\JsonConverter\SafeStringEnumConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\JsonConverter\TimeSpanJsonConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\JsonConverter\TimeSpanWithTypeInfoJsonConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\JsonConverter\UnixMilliSecondsToDateTimeJsonConverter.cs" />
@@ -54,6 +57,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\ParameterPacker\HttpParameterPacker.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\ParameterPacker\HttpParameterPackResult.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\Parameter\HttpServiceParameter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\Parameter\HttpServiceParameterOption.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\Parser\IDecrypter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\Parser\JsonEncryptedParser.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\Parser\JsonParser.cs" />
