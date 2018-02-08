@@ -1,4 +1,5 @@
 ﻿using System;
+using Unicorn;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
@@ -20,6 +21,8 @@ namespace DemoApp.UWP
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
+
+            PlatformService.Log = new NullLogService();
         }
 
         /// <summary>

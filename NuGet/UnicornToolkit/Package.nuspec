@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>UnicornToolkit</id>
-    <version>1.0.7</version>
+    <version>2.0.1</version>
     <title>UnicornToolkit</title>
     <authors>FatJohn</authors>
     <owners>FatJohn</owners>
@@ -11,7 +11,7 @@
       Please visit ProjectSite (my Github sourceCode page) to see demonstration of how to use UnicornToolkit to connect a web api quickly.
     </description>
     <releaseNotes>
-      fix possible NullReference Exception
+      update net standard library version
     </releaseNotes>
     <summary>
       This library is mainly to provide a simple way connect http service.
@@ -22,30 +22,23 @@
     <licenseUrl>https://opensource.org/licenses/MIT</licenseUrl>
     <copyright>Copyright  2016</copyright>
     <dependencies>
-      <group targetFramework="netstandard1.2">
-        <dependency id="Newtonsoft.Json" version="9.0.1" />
-        <dependency id="Microsoft.NETCore.Portable.Compatibility" version="1.0.1" />
+      <group targetFramework="netstandard1.3">
+        <dependency id="Newtonsoft.Json" version="10.0.3" />
         <dependency id="NETStandard.Library" version="1.6.1" />
         <dependency id="System.Threading.Tasks.Parallel" version="4.3.0" />
       </group>
-      <group targetFramework="net45">
-        <dependency id="Newtonsoft.Json" version="9.0.1" />
-      </group>
       <group targetFramework="uap">
-        <dependency id="Newtonsoft.Json" version="9.0.1" />
+        <dependency id="Newtonsoft.Json" version="10.0.3" />
         <dependency id="Microsoft.Xaml.Behaviors.Uwp.Managed" version="2.0.0" />
-        <dependency id="Microsoft.NETCore.UniversalWindowsPlatform" version="5.2.2" />
+        <dependency id="Microsoft.NETCore.UniversalWindowsPlatform" version="6.0.6" />
       </group>
     </dependencies>
     <tags>web utility http uwp netstandard net</tags>
   </metadata>
   <files>
     <!-- .NET Standard assemblies -->
-    <file src="..\..\Library\Unicorn.DotNetStandard\bin\Release\Unicorn.dll" target="lib\netstandard1.2\Unicorn.dll" />
-    <file src="..\..\Library\Unicorn.DotNetStandard\bin\Release\Unicorn.pdb" target="lib\netstandard1.2\Unicorn.pdb" />
-    <!-- .NET Framework assemblies -->
-    <file src="..\..\Library\Unicorn.DotNet\bin\Release\Unicorn.dll" target="lib\net45\Unicorn.dll" />
-    <file src="..\..\Library\Unicorn.DotNet\bin\Release\Unicorn.pdb" target="lib\net45\Unicorn.pdb" />
+    <file src="..\..\Library\Unicorn\bin\Release\netstandard1.3\Unicorn.dll" target="lib\netstandard1.3\Unicorn.dll" />
+    <file src="..\..\Library\Unicorn\bin\Release\netstandard1.3\Unicorn.pdb" target="lib\netstandard1.3\Unicorn.pdb" />
     <!-- UWP reference assemblies -->
     <file src="..\..\Library\Unicorn.UWP\bin\Release\Unicorn.dll" target="lib\uap\Unicorn.dll" />
     <file src="..\..\Library\Unicorn.UWP\bin\Release\Unicorn.pri" target="lib\uap\Unicorn.pri" />

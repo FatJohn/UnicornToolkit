@@ -7,7 +7,11 @@ using Unicorn.ServiceModel;
 using Unicorn.Net;
 using Unicorn;
 using Newtonsoft.Json;
+#if WINDOW_UWP
 using Windows.Web.Http;
+#else
+using System.Net.Http;
+#endif
 
 namespace DemoApp.UWP
 {
