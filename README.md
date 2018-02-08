@@ -1,6 +1,7 @@
-# UnicornToolkit
+# UnicornToolkit  [![NuGet Version](https://img.shields.io/nuget/v/UnicornToolkit.svg?style=flat)](https://www.nuget.org/packages/UnicornToolkit/)
 
-##### NuGet: https://www.nuget.org/packages/UnicornToolkit/
+Install from NuGet
+> PM> Install-Package UnicornToolkit
 
 ##### This library is mainly to provide a simple way connect http service.
 > Other classes were create during my developing or take from other open source project.
@@ -85,6 +86,19 @@ public class LoginParameter : HttpServiceParameter
 }
 ```
 
+There are 4 types of attributes that you can add on your property.
+- **HttpIgnoreAttribute** : When sending http request won't treat this property as any part of query string or body. This is can be used in places which you want user to fill something is part of your dynamic request uri. And you can use it in the override **CreateRequestUri** method in your service.
+- **HttpMultiPartPropertyAttribute** : see this property as part of http Multi-Part content.
+- **HttpRawByteArrayPropertyAttribute** : this is used for your own custom byte content.
+- **HttpRawStringPropertyAttribute** : this is used for you own string content.
+
+You can set HttpMethod, Content-Type by setting **HttpMethod** and **HttpContentType** property.
+  > Default value of HttpMethod is NotSpecific. My generator will check your attribute to determine whether it should use GET or POST. If you change **HttpMethod** property to other value, generator will use your value.
+
+Also there's a **Options** property which you can set like if enable cache, retry, even by pass auto generate request url.
+
+There're some built-in ServiceParameterParser. Such as **DateTimeToUnixSecondsParameterConverter, EnumKeyParameterConverter, EnumToIntParameterConverter, TimeSpanParameterConverter**.
+
 #### 3 : Create Service class
 ```csharp
 public class LoginService : BaseHttpService<LoginResult, LoginParameter, JsonParser<LoginResult>>
@@ -138,8 +152,11 @@ If you want to log what servcie sent. You can implement your own logger and set 
 ```csharp
 // YourPlatformLogger must inherit from ILogService
 PlatformService.Logger = YourPlatformLogger;
+// Or you can use built-in Logger
+PlatformService.Logger = new NullLogService
 ```
 
+> **NullLogService** ouput log to output window by using **System.Diagnostics.Debug.WriteLine** method.
 ***
 
 #### PreFlow
@@ -153,3 +170,9 @@ public interface IHttpPreFlow<TParameter>
     Task Process(TParameter parameter);
 }
 ```
+
+#### Other Useful classes
+- UnixDateTimeConverter
+- EnumHelper
+- Convert2
+- AsyncLock, AsyncAutoResetEvent, AsyncBarrier, AsyncCountdownEvent, AsyncReaderWriterLock, AsyncSemaphore
