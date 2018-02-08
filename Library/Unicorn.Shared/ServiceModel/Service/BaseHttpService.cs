@@ -185,7 +185,7 @@ namespace Unicorn.ServiceModel
 
             var cacheFileStream = await cacheFile.OpenReadAsync();
 #else
-            var cacheFileStream = await PlatformService.File.OpenReadStreamAsync(cacheFileName).ConfigureAwait(false);
+            var cacheFileStream = new FileStream(cacheFileName, FileMode.CreateNew, FileAccess.ReadWrite);
 #endif
             if (cacheFileStream == null)
             {
@@ -283,11 +283,6 @@ namespace Unicorn.ServiceModel
 
             try
             {
-                if (PlatformService.NetworkInformation.IsNetworkAvailable == false)
-                {
-                    return new ParseResult<TResult>(new ParseError(true));
-                }
-
                 await PreProcess(parameter).ConfigureAwait(false);
 
                 var requestUrl = CreateRequestUri(parameter);
@@ -520,7 +515,7 @@ namespace Unicorn.ServiceModel
                 var content = await httpResponse.Content.ReadAsBufferAsync();
                 await cacheFileStream.WriteAsync(content);
 #else
-                cacheFileStream = await PlatformService.File.OpenWriteStreamAsync(cacheFileName);
+                cacheFileStream = new FileStream(cacheFileName, FileMode.Open, FileAccess.Read);
                 var content = await httpResponse.Content.ReadAsByteArrayAsync();
                 await cacheFileStream.WriteAsync(content, 0, content.Length);
 #endif

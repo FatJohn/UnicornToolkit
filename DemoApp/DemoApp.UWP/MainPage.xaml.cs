@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Unicorn.ServiceModel;
 using Windows.UI.Xaml.Controls;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
@@ -16,7 +17,7 @@ namespace DemoApp.UWP
             this.InitializeComponent();
         }
 
-        public async Task Login()
+        private async void Button_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
             var parameter = new LoginParameter
             {

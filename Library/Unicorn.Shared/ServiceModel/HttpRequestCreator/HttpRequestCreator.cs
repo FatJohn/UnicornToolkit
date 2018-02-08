@@ -19,12 +19,12 @@
 // SOFTWARE
 
 using System;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Linq;
 #if WINDOWS_UWP
 using Windows.Web.Http;
 using Windows.Web.Http.Headers;
+using System.Runtime.InteropServices.WindowsRuntime;
 #else
 using System.Net;
 using System.Net.Http;
