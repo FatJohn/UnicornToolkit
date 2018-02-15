@@ -106,17 +106,18 @@ namespace Unicorn.ServiceModel
         public virtual async Task<ParseResult<TResult>> InvokeAsync(TParameter parameter, CancellationTokenSource cancellationTokenSource = null)
         {
             this.cancellationTokenSource = cancellationTokenSource;
-            var cancellationToken = cancellationTokenSource?.Token ?? CancellationToken.None;
-            try
+
+            if (this.cancellationTokenSource == null)
             {
-                return await Task.Run(() => Invoke(parameter), cancellationToken).ConfigureAwait(false);
+                return await Task.Run(() => Invoke(parameter)).ConfigureAwait(false);
             }
-            catch (ObjectDisposedException)
+
+            if (this.cancellationTokenSource.IsCancellationRequested)
             {
-                // 根據微軟文件 Task.Run 如果使用的 cancellationToken 已經被 Dispose 的話就會觸發此 Exception
-                // 當此情況發生就是當作已經 cancel 了
                 return new ParseResult<TResult>(new ParseError(true));
             }
+
+            return await Task.Run(() => Invoke(parameter)).ConfigureAwait(false);
         }
 
         protected virtual Task<ParseResult<TResult>> Invoke(TParameter parameter)
@@ -146,6 +147,11 @@ namespace Unicorn.ServiceModel
                 {
                     return await RemoteInvoke(parameter).ConfigureAwait(false);
                 }
+
+                cacheResponse.RequestMessage = new HttpRequestMessage();
+                var requestId = cacheResponse.RequestMessage.AddRequestId();
+
+                PlatformService.Log?.Trace($"[{requestId}] RequestUrl | {requestUrl} | Cache");
 
                 var result = await ParseResponse(cacheResponse).ConfigureAwait(false);
 

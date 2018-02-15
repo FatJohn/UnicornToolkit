@@ -33,6 +33,8 @@ namespace Unicorn
 {
     public static class HttpResponseMessageExtensions
     {
+        private static readonly string requestIdHeaderKey = "X-Request-ID";
+
         public static async Task<string> ReadAsStringAsync(this HttpResponseMessage source)
         {
             if (source.Content == null)
@@ -57,11 +59,29 @@ namespace Unicorn
 
         public static string ReadRequestId(this HttpResponseMessage source)
         {
+            return source.RequestMessage.ReadRequestId();
+        }
+
+        public static string ReadRequestId(this HttpRequestMessage requestMessage)
+        {
+            if (requestMessage == null)
+            {
+                return string.Empty;
+            }
+
 #if WINDOWS_UWP
-            return source.RequestMessage.Headers["X-Request-ID"];
+            requestMessage.Headers.TryGetValue(requestIdHeaderKey, out var requestId);
+            return requestId;
 #else
-            return source.RequestMessage.Headers.GetValues("X-Request-ID").FirstOrDefault();
+            return requestMessage.Headers.GetValues(requestIdHeaderKey).FirstOrDefault();
 #endif
+        }
+
+        public static string AddRequestId(this HttpRequestMessage requestMessage)
+        {
+            var requestId = Guid.NewGuid().ToString("N");
+            requestMessage.Headers.Add(requestIdHeaderKey, requestId);
+            return requestId;
         }
     }
 }
