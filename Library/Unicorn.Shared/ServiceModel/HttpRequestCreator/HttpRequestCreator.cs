@@ -35,8 +35,6 @@ namespace Unicorn.ServiceModel
 {
     public static class HttpRequestCreator
     {
-        private static readonly string requestIdHeaderKey = "X-Request-ID";
-
         public static HttpRequestMessage Create<TParameter>(TParameter parameter, string baseRequestUrl, HttpParameterPackResult packResult)
             where TParameter : HttpServiceParameter
         {
@@ -46,7 +44,7 @@ namespace Unicorn.ServiceModel
             // 依照 requestUrl 產生 Request Url
             var httpRequest = new HttpRequestMessage(httpMethod, new Uri(requestUrl));
             // 方便辨識送出的 request
-            httpRequest.Headers.Add(requestIdHeaderKey, Guid.NewGuid().ToString("N"));
+            var requestId = httpRequest.AddRequestId();
             // 加入 Header
             packResult.HeaderParameterMap.ForEach((keyValue) => httpRequest.Headers.Add(keyValue.Key, keyValue.Value));
             // 加入 Body content
@@ -61,12 +59,12 @@ namespace Unicorn.ServiceModel
 #endif
             }
 
-            LogParameterPackResult(httpRequest, packResult);
+            LogParameterPackResult(httpRequest, packResult, requestId);
 
             return httpRequest;
         }
 
-        private static void LogParameterPackResult(HttpRequestMessage httpRequest, HttpParameterPackResult packResult)
+        private static void LogParameterPackResult(HttpRequestMessage httpRequest, HttpParameterPackResult packResult, string requestId)
         {
             var logger = PlatformService.Log;
 
@@ -74,12 +72,9 @@ namespace Unicorn.ServiceModel
             {
                 return;
             }
-#if WINDOWS_UWP
-            var requestId = httpRequest.Headers[requestIdHeaderKey];
-#else
-            var requestId = httpRequest.Headers.GetValues(requestIdHeaderKey).FirstOrDefault();
-#endif
+
             logger.Trace($"[{requestId}] RequestUrl | {httpRequest.RequestUri}");
+
             packResult.HeaderParameterMap.ForEach((keyValue) =>
             {
                 logger.Trace($"[{requestId}] Header Parameters | {keyValue.Key}:{keyValue.Value}");
