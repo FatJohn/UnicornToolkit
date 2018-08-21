@@ -142,7 +142,7 @@ namespace Unicorn.ServiceModel
 
                 var requestUrl = CreateRequestUri(parameter);
 
-                var cacheResponse = await CreateCacheResponse(parameter, requestUrl);
+                var cacheResponse = await CreateCacheResponse(parameter, requestUrl).ConfigureAwait(false);
                 if (cacheResponse == null)
                 {
                     return await RemoteInvoke(parameter).ConfigureAwait(false);
@@ -199,7 +199,7 @@ namespace Unicorn.ServiceModel
             }
 
             // 4. 讀取 cache 的時間
-            var cacheContent = await ReadCacheContent(parameter, cacheFileStream);
+            var cacheContent = await ReadCacheContent(parameter, cacheFileStream).ConfigureAwait(false);
             if (cacheContent == null)
             {
                 return null;
@@ -480,18 +480,19 @@ namespace Unicorn.ServiceModel
                 var content = await httpResponse.Content.ReadAsBufferAsync();
                 await cacheFileStream.WriteAsync(content);
 #else
-                cacheFileStream = await PlatformService.File.OpenWriteStreamAsync(cacheFileName);
-                var content = await httpResponse.Content.ReadAsByteArrayAsync();
-                await cacheFileStream.WriteAsync(content, 0, content.Length);
+                cacheFileStream = await PlatformService.File.OpenWriteStreamAsync(cacheFileName).ConfigureAwait(false);
+                var content = await httpResponse.Content.ReadAsByteArrayAsync().ConfigureAwait(false);
+                await cacheFileStream.WriteAsync(content, 0, content.Length).ConfigureAwait(false);
 #endif
                 var cacheTimeTicks = DateTime.Now.Ticks;
                 var cacheTimeTicksBytes = BitConverter.GetBytes(cacheTimeTicks);
 #if WINDOWS_UWP
                 await cacheFileStream.WriteAsync(cacheTimeTicksBytes.AsBuffer());
-#else
-                await cacheFileStream.WriteAsync(cacheTimeTicksBytes, 0, cacheTimeTicksBytes.Length);
-#endif
                 await cacheFileStream.FlushAsync();
+#else
+                await cacheFileStream.WriteAsync(cacheTimeTicksBytes, 0, cacheTimeTicksBytes.Length).ConfigureAwait(false);
+                await cacheFileStream.FlushAsync().ConfigureAwait(false);
+#endif
             }
             catch (Exception ex)
             {
