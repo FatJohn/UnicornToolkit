@@ -24,6 +24,11 @@ namespace Unicorn.ServiceModel
     {
         public string Convert(object value)
         {
+            if (value == null)
+            {
+                return string.Empty;
+            }
+
             return ((int)value).ToString();
         }
     }

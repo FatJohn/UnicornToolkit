@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2017 Louis Wu
+﻿// Copyright (c) 2016 Joe Wen
 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -19,33 +19,37 @@
 // SOFTWARE
 
 using System;
-using Windows.UI.Xaml;
 using Windows.UI.Xaml.Data;
 
 namespace Unicorn
 {
-    public class ReverseNumberToVisibilityConverter : IValueConverter
+    public class DayOfWeekConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            if (value == null)
+            var format = (string)parameter;
+            format = string.IsNullOrEmpty(format) ? string.Empty : $"_{format}";
+
+            var weekday = (DayOfWeek)value;
+            switch (weekday)
             {
-                return Visibility.Visible;
+                case DayOfWeek.Sunday:
+                    return ResourceManager.GetString($"STRING_ID_SUNDAY{format}");
+                case DayOfWeek.Monday:
+                    return ResourceManager.GetString($"STRING_ID_MONDAY{format}");
+                case DayOfWeek.Tuesday:
+                    return ResourceManager.GetString($"STRING_ID_TUESDAY{format}");
+                case DayOfWeek.Wednesday:
+                    return ResourceManager.GetString($"STRING_ID_WEDNESDAY{format}");
+                case DayOfWeek.Thursday:
+                    return ResourceManager.GetString($"STRING_ID_THURSDAY{format}");
+                case DayOfWeek.Friday:
+                    return ResourceManager.GetString($"STRING_ID_FRIDAY{format}");
+                case DayOfWeek.Saturday:
+                    return ResourceManager.GetString($"STRING_ID_SATURDAY{format}");
             }
 
-            var decimalNumber = System.Convert.ToDecimal(value);
-            if (decimalNumber > 0)
-            {
-                return Visibility.Collapsed;
-            }
-
-            var s = value.ToString();
-            if (double.TryParse(s, out double number))
-            {
-                return number > 0 ? Visibility.Collapsed : Visibility.Visible;
-            }
-
-            return Visibility.Visible;
+            return string.Empty;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)

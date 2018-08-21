@@ -21,31 +21,21 @@
 using System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Data;
+using Windows.UI.Xaml.Documents;
 
 namespace Unicorn
 {
-    public class ReverseNumberToVisibilityConverter : IValueConverter
+    public class UnderlineStyleToBooleanConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
             if (value == null)
             {
-                return Visibility.Visible;
+                return false;
             }
 
-            var decimalNumber = System.Convert.ToDecimal(value);
-            if (decimalNumber > 0)
-            {
-                return Visibility.Collapsed;
-            }
-
-            var s = value.ToString();
-            if (double.TryParse(s, out double number))
-            {
-                return number > 0 ? Visibility.Collapsed : Visibility.Visible;
-            }
-
-            return Visibility.Visible;
+            var underlineStyle = (UnderlineStyle)value;
+            return underlineStyle == UnderlineStyle.Single;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)

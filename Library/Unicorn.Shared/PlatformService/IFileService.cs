@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2017 Louis Wu
+﻿// Copyright (c) 2016 John Shu
 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -18,39 +18,19 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE
 
-using System;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Data;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace Unicorn
 {
-    public class ReverseNumberToVisibilityConverter : IValueConverter
+    public interface IFileService
     {
-        public object Convert(object value, Type targetType, object parameter, string language)
-        {
-            if (value == null)
-            {
-                return Visibility.Visible;
-            }
+        Task<bool> ExistsAsync(string path);
 
-            var decimalNumber = System.Convert.ToDecimal(value);
-            if (decimalNumber > 0)
-            {
-                return Visibility.Collapsed;
-            }
+        Task<Stream> OpenReadStreamAsync(string path);
 
-            var s = value.ToString();
-            if (double.TryParse(s, out double number))
-            {
-                return number > 0 ? Visibility.Collapsed : Visibility.Visible;
-            }
+        Task<Stream> OpenWriteStreamAsync(string path);
 
-            return Visibility.Visible;
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, string language)
-        {
-            throw new NotImplementedException();
-        }
+        Task MoveAndReplaceAsync(string sourcePath, string destinationPath);
     }
 }

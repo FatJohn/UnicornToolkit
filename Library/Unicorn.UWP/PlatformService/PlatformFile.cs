@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2017 Louis Wu
+﻿// Copyright (c) 2016 John Shu
 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -19,38 +19,33 @@
 // SOFTWARE
 
 using System;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Data;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace Unicorn
 {
-    public class ReverseNumberToVisibilityConverter : IValueConverter
+    public class PlatformFile : IFileService
     {
-        public object Convert(object value, Type targetType, object parameter, string language)
+        public Task<bool> ExistsAsync(string path)
         {
-            if (value == null)
-            {
-                return Visibility.Visible;
-            }
-
-            var decimalNumber = System.Convert.ToDecimal(value);
-            if (decimalNumber > 0)
-            {
-                return Visibility.Collapsed;
-            }
-
-            var s = value.ToString();
-            if (double.TryParse(s, out double number))
-            {
-                return number > 0 ? Visibility.Collapsed : Visibility.Visible;
-            }
-
-            return Visibility.Visible;
+            return StorageHelper.ExistsFile(path);
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        public Task<Stream> OpenReadStreamAsync(string path)
         {
-            throw new NotImplementedException();
+            return StorageHelper.OpenReadStream(path, true);
+        }
+
+        public Task<Stream> OpenWriteStreamAsync(string path)
+        {
+            return StorageHelper.OpenWriteStream(path);
+        }
+
+        public async Task MoveAndReplaceAsync(string sourcePath, string destinationPath)
+        {
+            var newFile = await StorageHelper.GetFile(destinationPath);
+            var oldFile = await StorageHelper.GetFile(sourcePath);
+            await newFile.MoveAndReplaceAsync(oldFile);
         }
     }
 }

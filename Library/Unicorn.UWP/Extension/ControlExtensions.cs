@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2017 Louis Wu
+﻿// Copyright (c) 2018 Louis Wu
 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -18,39 +18,22 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE
 
-using System;
 using Windows.UI.Xaml;
-using Windows.UI.Xaml.Data;
+using Windows.UI.Xaml.Controls;
 
 namespace Unicorn
 {
-    public class ReverseNumberToVisibilityConverter : IValueConverter
+    public static class ControlExtensions
     {
-        public object Convert(object value, Type targetType, object parameter, string language)
+        public static bool TrySetPadding(this Control control, Thickness targetPadding)
         {
-            if (value == null)
+            if (control.Padding == targetPadding)
             {
-                return Visibility.Visible;
+                return false;
             }
 
-            var decimalNumber = System.Convert.ToDecimal(value);
-            if (decimalNumber > 0)
-            {
-                return Visibility.Collapsed;
-            }
-
-            var s = value.ToString();
-            if (double.TryParse(s, out double number))
-            {
-                return number > 0 ? Visibility.Collapsed : Visibility.Visible;
-            }
-
-            return Visibility.Visible;
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, string language)
-        {
-            throw new NotImplementedException();
+            control.Padding = targetPadding;
+            return true;
         }
     }
 }
