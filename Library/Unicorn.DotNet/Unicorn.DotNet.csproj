@@ -51,6 +51,7 @@
     <Compile Include="PlatformService\DispatcherService.cs" />
     <Compile Include="PlatformService\NetowrkInformationService.cs" />
     <Compile Include="PlatformService\PlatformFile.cs" />
+    <Compile Include="PlatformService\PlatformService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

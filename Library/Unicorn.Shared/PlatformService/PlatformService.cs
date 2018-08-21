@@ -20,7 +20,7 @@
 
 namespace Unicorn
 {
-    public static class PlatformService
+    public static partial class PlatformService
     {
         public static IApplicationInformationService ApplicationInformation { get; set; }
 
