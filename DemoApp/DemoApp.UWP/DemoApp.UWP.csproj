@@ -135,7 +135,7 @@
       <Version>6.1.7</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
-      <Version>11.0.2</Version>
+      <Version>10.0.2</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="..\DemoApp.Shared\DemoApp.Shared.projitems" Label="Shared" />
