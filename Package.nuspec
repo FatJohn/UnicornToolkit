@@ -1,0 +1,92 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>UnicornToolkit</id>
+    <version>2.0.3</version>
+    <title>UnicornToolkit</title>
+    <authors>FatJohn</authors>
+    <owners>FatJohn</owners>
+    <description>
+      This library is mainly to provide a simple way connect http service.
+      Please visit ProjectSite (my Github sourceCode page) to see demonstration of how to use UnicornToolkit to connect a web api quickly.
+    </description>
+    <releaseNotes>
+      1. Fix possible issues.
+      2. Add .NET 4.5.2 support back
+      3. upgrade UWP framework to 6.1.7
+      4. Fix can't use UWP version other than x86
+    </releaseNotes>
+    <summary>
+      This library is mainly to provide a simple way connect http service.
+    </summary>
+    <projectUrl>https://github.com/FatJohn/UnicornToolkit</projectUrl>
+    <iconUrl>https://nuget.org/Content/Images/packageDefaultIcon-50x50.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <licenseUrl>https://opensource.org/licenses/MIT</licenseUrl>
+    <copyright>Copyright  2018</copyright>
+    <dependencies>
+      <group targetFramework="netstandard1.3">
+        <dependency id="Newtonsoft.Json" version="10.0.2" />
+        <dependency id="NETStandard.Library" version="1.6.1" />
+        <dependency id="System.Threading.Tasks.Parallel" version="4.3.0" />
+      </group>
+      <group targetFramework="net45">
+        <dependency id="Newtonsoft.Json" version="10.0.2" />
+      </group>
+      <group targetFramework="uap10.0">
+        <dependency id="Newtonsoft.Json" version="10.0.2" />
+        <dependency id="Microsoft.Xaml.Behaviors.Uwp.Managed" version="2.0.0" />
+        <dependency id="Microsoft.NETCore.UniversalWindowsPlatform" version="6.1.7" />
+      </group>
+    </dependencies>
+    <tags>web utility http uwp netstandard net</tags>
+  </metadata>
+  <files>
+    <!-- .NET Standard assemblies -->
+    <file src=".\Library\Unicorn\bin\Release\netstandard1.3\Unicorn.dll" target="lib\netstandard1.3\Unicorn.dll" />
+    <file src=".\Library\Unicorn\bin\Release\netstandard1.3\Unicorn.pdb" target="lib\netstandard1.3\Unicorn.pdb" />
+    
+    <!-- .NET Framework assemblies -->
+    <file src=".\Library\Unicorn.DotNet\bin\Release\Unicorn.dll" target="lib\net45\Unicorn.dll" />
+    <file src=".\Library\Unicorn.DotNet\bin\Release\Unicorn.pdb" target="lib\net45\Unicorn.pdb" />
+    
+    <!-- UWP reference assemblies -->
+    <file src=".\Library\Unicorn.UWP\bin\Release\Unicorn.xr.xml" target="lib\uap10.0\Unicorn\Unicorn.xr.xml" />
+    <file src=".\Library\Unicorn.UWP\bin\x86\Release\Unicorn.xr.xml" target="lib\uap10.0\x86\Unicorn\Unicorn.xr.xml" />
+    <file src=".\Library\Unicorn.UWP\bin\x64\Release\Unicorn.xr.xml" target="lib\uap10.0\x64\Unicorn\Unicorn.xr.xml" />
+    <file src=".\Library\Unicorn.UWP\bin\ARM\Release\Unicorn.xr.xml" target="lib\uap10.0\ARM\Unicorn\Unicorn.xr.xml" />
+    
+    <!-- XAML Controls -->
+    <file src=".\Library\Unicorn.UWP\bin\Release\themes\Generic.xbf" target="lib\uap10.0\themes" />
+    <file src=".\Library\Unicorn.UWP\bin\x86\Release\themes\Generic.xbf" target="lib\uap10.0\x86\themes" />
+    <file src=".\Library\Unicorn.UWP\bin\x64\Release\themes\Generic.xbf" target="lib\uap10.0\x64\themes" />
+    <file src=".\Library\Unicorn.UWP\bin\ARM\Release\themes\Generic.xbf" target="lib\uap10.0\ARM\themes" />
+    
+    <file src=".\Library\Unicorn.UWP\bin\Release\UI.Xaml\Controls\ThreeStateImageButton\ThreeStateImageButton.xbf" target="lib\uap10.0\UI.Xaml\Controls\ThreeStateImageButton\ThreeStateImageButton.xbf" />
+    <file src=".\Library\Unicorn.UWP\bin\x86\Release\UI.Xaml\Controls\ThreeStateImageButton\ThreeStateImageButton.xbf" target="lib\uap10.0\x86\UI.Xaml\Controls\ThreeStateImageButton\ThreeStateImageButton.xbf" />
+    <file src=".\Library\Unicorn.UWP\bin\x64\Release\UI.Xaml\Controls\ThreeStateImageButton\ThreeStateImageButton.xbf" target="lib\uap10.0\x64\UI.Xaml\Controls\ThreeStateImageButton\ThreeStateImageButton.xbf" />
+    <file src=".\Library\Unicorn.UWP\bin\ARM\Release\UI.Xaml\Controls\ThreeStateImageButton\ThreeStateImageButton.xbf" target="lib\uap10.0\ARM\UI.Xaml\Controls\ThreeStateImageButton\ThreeStateImageButton.xbf" />
+    
+    <file src=".\Library\Unicorn.UWP\bin\Release\UI.Xaml\Controls\WaitDialog\WaitDialog.xbf" target="lib\uap10.0\UI.Xaml\Controls\WaitDialog\WaitDialog.xbf" />
+    <file src=".\Library\Unicorn.UWP\bin\x86\Release\UI.Xaml\Controls\WaitDialog\WaitDialog.xbf" target="lib\uap10.0\x86\UI.Xaml\Controls\WaitDialog\WaitDialog.xbf" />
+    <file src=".\Library\Unicorn.UWP\bin\x64\Release\UI.Xaml\Controls\WaitDialog\WaitDialog.xbf" target="lib\uap10.0\x64\UI.Xaml\Controls\WaitDialog\WaitDialog.xbf" />
+    <file src=".\Library\Unicorn.UWP\bin\ARM\Release\UI.Xaml\Controls\WaitDialog\WaitDialog.xbf" target="lib\uap10.0\ARM\UI.Xaml\Controls\WaitDialog\WaitDialog.xbf" />
+    
+    <!-- AnyCPU -->
+    <file src=".\Library\Unicorn.UWP\bin\Release\Unicorn.dll" target="lib\uap10.0" />
+    <file src=".\Library\Unicorn.UWP\bin\Release\Unicorn.pri" target="lib\uap10.0" />
+    <file src=".\Library\Unicorn.UWP\bin\Release\Unicorn.pdb" target="lib\uap10.0" />
+    <!-- x86 -->
+    <file src=".\Library\Unicorn.UWP\bin\x86\Release\Unicorn.dll" target="lib\uap10.0\x86" />
+    <file src=".\Library\Unicorn.UWP\bin\x86\Release\Unicorn.pri" target="lib\uap10.0\x86" />
+    <file src=".\Library\Unicorn.UWP\bin\x86\Release\Unicorn.pdb" target="lib\uap10.0\x86" />
+    <!-- x64 -->
+    <file src=".\Library\Unicorn.UWP\bin\x64\Release\Unicorn.dll" target="lib\uap10.0\x64" />
+    <file src=".\Library\Unicorn.UWP\bin\x64\Release\Unicorn.pri" target="lib\uap10.0\x64" />
+    <file src=".\Library\Unicorn.UWP\bin\x64\Release\Unicorn.pdb" target="lib\uap10.0\x64" />
+    <!-- ARM -->
+    <file src=".\Library\Unicorn.UWP\bin\ARM\Release\Unicorn.dll" target="lib\uap10.0\ARM" />
+    <file src=".\Library\Unicorn.UWP\bin\ARM\Release\Unicorn.pri" target="lib\uap10.0\ARM" />
+    <file src=".\Library\Unicorn.UWP\bin\ARM\Release\Unicorn.pdb" target="lib\uap10.0\ARM" />    
+  </files>
+</package>

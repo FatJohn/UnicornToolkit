@@ -20,6 +20,8 @@ MSBuild CommunityTasks 額外增加的Tasks參考網址，請翻原始碼 : http
         <ProjectToBuild Include="$(DotNetSolutionFile)">
         </ProjectToBuild>
         <ProjectToBuild Include="$(UWPSolutionFile)">
+        </ProjectToBuild>
+        <ProjectToBuild Include="$(UWPSolutionFile)">
             <AdditionalProperties>Platform=x64</AdditionalProperties>  
         </ProjectToBuild>
         <ProjectToBuild Include="$(UWPSolutionFile)">
@@ -29,6 +31,15 @@ MSBuild CommunityTasks 額外增加的Tasks參考網址，請翻原始碼 : http
             <AdditionalProperties>Platform=ARM</AdditionalProperties>  
         </ProjectToBuild>
     </ItemGroup>
+    
+    <Target Name="Clear">
+        <DeleteTree Directories=".\Library\Unicorn\bin" />
+        <DeleteTree Directories=".\Library\Unicorn\obj" />
+        <DeleteTree Directories=".\Library\Unicorn.DotNet\bin" />
+        <DeleteTree Directories=".\Library\Unicorn.DotNet\obj" />
+        <DeleteTree Directories=".\Library\Unicorn.UWP\bin" />
+        <DeleteTree Directories=".\Library\Unicorn.UWP\obj" />
+    </Target>
 
     <Target Name="RestoreNuGetPackage">
         <NuGetRestore Solution="$(NetStandardSolutionFile)"/>
@@ -43,13 +54,14 @@ MSBuild CommunityTasks 額外增加的Tasks參考網址，請翻原始碼 : http
         </MSBuild>
     </Target>
     
-    <!-- <Target Name="CreateNuGetPackage"> -->
-        <!-- <NuGetPack File="VASTreaming.UWP.nuspec" /> -->
-    <!-- </Target> -->
+    <Target Name="CreateNuGetPackage">
+        <NuGetPack File="Package.nuspec" />
+    </Target>
 
     <Target Name="Build">
+        <CallTarget Targets="Clear" />
         <CallTarget Targets="RestoreNuGetPackage" />
         <CallTarget Targets="BuildSolution" />
-        <!-- <CallTarget Targets="CreateNuGetPackage" /> -->
+        <CallTarget Targets="CreateNuGetPackage" />
     </Target>
 </Project>
