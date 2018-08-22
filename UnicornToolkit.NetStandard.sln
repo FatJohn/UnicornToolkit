@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2003
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Unicorn", "Library\Unicorn\Unicorn.csproj", "{FB91876A-FCEE-40B8-84F5-3DA532CB26CF}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Unicorn.Shared", "Library\Unicorn.Shared\Unicorn.Shared.shproj", "{2A5998E5-3A5A-4D48-B0B9-D2FA5354D0B9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Library", "Library", "{38359EFD-2468-46AA-8FD6-80A733538141}"
+EndProject
+Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Library\Unicorn.Shared\Unicorn.Shared.projitems*{2a5998e5-3a5a-4d48-b0b9-d2fa5354d0b9}*SharedItemsImports = 13
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FB91876A-FCEE-40B8-84F5-3DA532CB26CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB91876A-FCEE-40B8-84F5-3DA532CB26CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB91876A-FCEE-40B8-84F5-3DA532CB26CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB91876A-FCEE-40B8-84F5-3DA532CB26CF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{FB91876A-FCEE-40B8-84F5-3DA532CB26CF} = {38359EFD-2468-46AA-8FD6-80A733538141}
+		{2A5998E5-3A5A-4D48-B0B9-D2FA5354D0B9} = {38359EFD-2468-46AA-8FD6-80A733538141}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {AFA03203-BFFE-4793-8D9E-23E7C9B4DD8A}
+	EndGlobalSection
+EndGlobal
