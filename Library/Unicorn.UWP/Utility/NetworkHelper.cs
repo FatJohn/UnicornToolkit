@@ -58,24 +58,8 @@ namespace Unicorn
             try
             {
                 NetworkInformation.NetworkStatusChanged += NetworkInformationOnNetworkStatusChanged;
-                CheckInternetAccess();
-            }
-            catch (Exception ex)
-            {
-                PlatformService.Log?.Error(ex);
-            }
-        }
-
-        private static void CheckInternetAccess()
-        {
-            try
-            {
-                var connectionProfile = NetworkInformation.GetInternetConnectionProfile();
-
-                IsNetworkAvailable = (connectionProfile != null &&
-                                 connectionProfile.GetNetworkConnectivityLevel() == NetworkConnectivityLevel.InternetAccess);
-
-                PlatformService.Log?.Trace("has network changed: " + IsNetworkAvailable);
+                IsNetworkAvailable = CheckInternetAvailable();
+                PlatformService.Log?.Trace("Initial Network Status : " + IsNetworkAvailable);
             }
             catch (Exception ex)
             {
@@ -85,7 +69,9 @@ namespace Unicorn
 
         private static void NetworkInformationOnNetworkStatusChanged(object sender)
         {
-            CheckInternetAccess();
+            IsNetworkAvailable = CheckInternetAvailable();
+
+            PlatformService.Log?.Trace("Network Status changed : " + IsNetworkAvailable);
         }
 
         /// <summary>

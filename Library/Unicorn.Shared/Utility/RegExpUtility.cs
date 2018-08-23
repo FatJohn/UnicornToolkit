@@ -30,6 +30,7 @@ namespace Unicorn
             Cellphone,
             Password,
             Email,
+            Numbers,
         }
 
         public static bool ValidEmail(string sourceString)
@@ -40,6 +41,11 @@ namespace Unicorn
         public static bool ValidPassword(string sourceString)
         {
             return ValidateValueByRegex(RegExValideType.Password, sourceString);
+        }
+
+        public static bool ValidNumbers(string sourceString)
+        {
+            return ValidateValueByRegex(RegExValideType.Numbers, sourceString);
         }
 
         private static bool ValidateValueByRegex(RegExValideType validateType, string value)
@@ -61,6 +67,9 @@ namespace Unicorn
                     break;
                 case RegExValideType.Email:
                     regex = new Regex("^[_a-z0-9-]+([.][_a-z0-9-]+)*@[a-z0-9-]+([.][a-z0-9-]+)*$");
+                    break;
+                case RegExValideType.Numbers:
+                    regex = new Regex("^[0-9]+$");
                     break;
                 default:
                     regex = null;

@@ -41,8 +41,12 @@ namespace Unicorn.ServiceModel
             var httpMethod = GetHttpMethod(parameter, packResult);
             // 取得的 Url
             var requestUrl = GetRequestUrl(parameter, baseRequestUrl, packResult.GetCombindedString);
+            if (Uri.TryCreate(requestUrl, UriKind.RelativeOrAbsolute, out var requestUri) == false)
+            {
+                return null;
+            }
             // 依照 requestUrl 產生 Request Url
-            var httpRequest = new HttpRequestMessage(httpMethod, new Uri(requestUrl));
+            var httpRequest = new HttpRequestMessage(httpMethod, requestUri);
             // 方便辨識送出的 request
             var requestId = httpRequest.AddRequestId();
             // 加入 Header

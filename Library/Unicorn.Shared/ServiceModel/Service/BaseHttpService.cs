@@ -142,7 +142,7 @@ namespace Unicorn.ServiceModel
 
                 var requestUrl = CreateRequestUri(parameter);
 
-                var cacheResponse = await CreateCacheResponse(parameter, requestUrl);
+                var cacheResponse = await CreateCacheResponse(parameter, requestUrl).ConfigureAwait(false);
                 if (cacheResponse == null)
                 {
                     return await RemoteInvoke(parameter).ConfigureAwait(false);
@@ -191,7 +191,7 @@ namespace Unicorn.ServiceModel
 
             var cacheFileStream = await cacheFile.OpenReadAsync();
 #else
-            var cacheFileStream = new FileStream(cacheFileName, FileMode.CreateNew, FileAccess.ReadWrite);
+            var cacheFileStream = await PlatformService.File.OpenReadStreamAsync(cacheFileName).ConfigureAwait(false);
 #endif
             if (cacheFileStream == null)
             {
@@ -199,7 +199,7 @@ namespace Unicorn.ServiceModel
             }
 
             // 4. 讀取 cache 的時間
-            var cacheContent = await ReadCacheContent(parameter, cacheFileStream);
+            var cacheContent = await ReadCacheContent(parameter, cacheFileStream).ConfigureAwait(false);
             if (cacheContent == null)
             {
                 return null;
@@ -289,6 +289,11 @@ namespace Unicorn.ServiceModel
 
             try
             {
+                if (PlatformService.NetworkInformation.IsNetworkAvailable == false)
+                {
+                    return new ParseResult<TResult>(new ParseError(true));
+                }
+
                 await PreProcess(parameter).ConfigureAwait(false);
 
                 var requestUrl = CreateRequestUri(parameter);
@@ -355,21 +360,35 @@ namespace Unicorn.ServiceModel
             do
             {
                 var httpRequestMessage = httpRequestMessageDelegate();
+                if (httpRequestMessage == null)
+                {
+                    break;
+                }
+
                 httpResponse = await SendRequest(httpRequestMessage).ConfigureAwait(false);
                 if (cancellationTokenSource != null && cancellationTokenSource.IsCancellationRequested)
                 {
+                    httpRequestMessage.Dispose();
+                    // 被 cancel 了就不要有回傳的東西了
+                    httpResponse?.Dispose();
+                    httpResponse = null;
                     break;
                 }
 
                 if (httpResponse != null && httpResponse.IsSuccessStatusCode)
                 {
+                    httpRequestMessage.Dispose();
                     break;
                 }
 
-                if (retryRemain > 0)
+                if (retryRemain <= 0)
                 {
-                    await Task.Delay(retryControl.Interval).ConfigureAwait(false);
+                    httpRequestMessage.Dispose();
+                    break;
                 }
+
+                await Task.Delay(retryControl.Interval).ConfigureAwait(false);
+                httpRequestMessage.Dispose();
             }
             while (retryRemain-- > 0);
 
@@ -441,66 +460,6 @@ namespace Unicorn.ServiceModel
                     break;
             }
         }
-
-        protected async Task<HttpResponseMessage> SendRedirectableRequest(HttpRequestMessage httpRequestMessage)
-        {
-            var httpFilter = new HttpBaseProtocolFilter();
-            httpFilter.CacheControl.ReadBehavior = HttpCacheReadBehavior.MostRecent;
-            httpFilter.CacheControl.WriteBehavior = HttpCacheWriteBehavior.NoCache;
-            httpFilter.AllowAutoRedirect = false;
-            var client = new HttpClient(httpFilter);
-
-            var response = await SendRedirectableRequestRecursively(client, httpRequestMessage).ConfigureAwait(false);
-
-            client.Dispose();
-            httpFilter.Dispose();
-
-            return response;
-        }
-
-        private async Task<HttpResponseMessage> SendRedirectableRequestRecursively(HttpClient client, HttpRequestMessage httpRequestMessage)
-        {
-            try
-            {
-                var response = await client.SendRequestAsync(httpRequestMessage);
-                if (response.StatusCode != Windows.Web.Http.HttpStatusCode.Found)
-                {
-                    return response;
-                }
-
-                var cloneHttpRequest = new HttpRequestMessage(httpRequestMessage.Method, response.Headers.Location);
-                if (httpRequestMessage.Content != null)
-                {
-                    var buffer = await httpRequestMessage.Content.ReadAsBufferAsync();
-                    cloneHttpRequest.Content = new HttpBufferContent(buffer);
-
-                    // copy headers
-                    if (httpRequestMessage.Content.Headers != null)
-                    {
-                        foreach (var header in httpRequestMessage.Headers)
-                        {
-                            cloneHttpRequest.Content.Headers.Add(header);
-                        }
-                    }
-                }
-
-                foreach (var httpProperty in httpRequestMessage.Properties)
-                {
-                    cloneHttpRequest.Properties.Add(httpProperty);
-                }
-
-                foreach (var header in httpRequestMessage.Headers)
-                {
-                    cloneHttpRequest.Headers.Add(header);
-                }
-
-                return await SendRedirectableRequestRecursively(client, cloneHttpRequest).ConfigureAwait(false);
-            }
-            catch (Exception)
-            {
-                return null;
-            }
-        }
 #endif
 
         private async Task SaveCache(TParameter parameter, string baseRequestUrl, HttpParameterPackResult packResult, HttpResponseMessage httpResponse)
@@ -521,18 +480,19 @@ namespace Unicorn.ServiceModel
                 var content = await httpResponse.Content.ReadAsBufferAsync();
                 await cacheFileStream.WriteAsync(content);
 #else
-                cacheFileStream = new FileStream(cacheFileName, FileMode.Open, FileAccess.Read);
-                var content = await httpResponse.Content.ReadAsByteArrayAsync();
-                await cacheFileStream.WriteAsync(content, 0, content.Length);
+                cacheFileStream = await PlatformService.File.OpenWriteStreamAsync(cacheFileName).ConfigureAwait(false);
+                var content = await httpResponse.Content.ReadAsByteArrayAsync().ConfigureAwait(false);
+                await cacheFileStream.WriteAsync(content, 0, content.Length).ConfigureAwait(false);
 #endif
                 var cacheTimeTicks = DateTime.Now.Ticks;
                 var cacheTimeTicksBytes = BitConverter.GetBytes(cacheTimeTicks);
 #if WINDOWS_UWP
                 await cacheFileStream.WriteAsync(cacheTimeTicksBytes.AsBuffer());
-#else
-                await cacheFileStream.WriteAsync(cacheTimeTicksBytes, 0, cacheTimeTicksBytes.Length);
-#endif
                 await cacheFileStream.FlushAsync();
+#else
+                await cacheFileStream.WriteAsync(cacheTimeTicksBytes, 0, cacheTimeTicksBytes.Length).ConfigureAwait(false);
+                await cacheFileStream.FlushAsync().ConfigureAwait(false);
+#endif
             }
             catch (Exception ex)
             {

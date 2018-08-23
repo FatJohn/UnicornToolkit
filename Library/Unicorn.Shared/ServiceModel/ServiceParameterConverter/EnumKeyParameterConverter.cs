@@ -26,6 +26,11 @@ namespace Unicorn.ServiceModel
     {
         public string Convert(object value)
         {
+            if (value == null)
+            {
+                return string.Empty;
+            }
+
             var enumValue = (Enum)value;
             return enumValue.GetKey();
         }

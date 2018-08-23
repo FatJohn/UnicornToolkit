@@ -33,6 +33,12 @@ namespace Unicorn
                 return Visibility.Visible;
             }
 
+            var decimalNumber = System.Convert.ToDecimal(value);
+            if (decimalNumber > 0)
+            {
+                return Visibility.Collapsed;
+            }
+
             var s = value.ToString();
             if (double.TryParse(s, out double number))
             {

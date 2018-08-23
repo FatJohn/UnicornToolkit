@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+MSBuild 內建的 Tasks 的參考網址 : https://docs.microsoft.com/en-us/visualstudio/msbuild/msbuild-task-reference
+MSBuild CommunityTasks 額外增加的Tasks參考網址，請翻原始碼 : https://github.com/loresoft/msbuildtasks
+-->
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <Configuration Condition="'$(Configuration)' == ''">Release</Configuration>
+        <Targets Condition="'$(SolutionTarget)' == ''">ReBuild</Targets>
+        <NetStandardSolutionFile>UnicornToolkit.NetStandard.sln</NetStandardSolutionFile>
+        <DotNetSolutionFile>UnicornToolkit.DotNet.sln</DotNetSolutionFile>
+        <UWPSolutionFile>UnicornToolkit.UWP.sln</UWPSolutionFile>
+    </PropertyGroup>
+
+    <Import Project="$(MSBuildExtensionsPath)\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets"/>
+    
+    <ItemGroup>
+        <ProjectToBuild Include="$(NetStandardSolutionFile)">
+        </ProjectToBuild>
+        <ProjectToBuild Include="$(DotNetSolutionFile)">
+        </ProjectToBuild>
+        <ProjectToBuild Include="$(UWPSolutionFile)">
+        </ProjectToBuild>
+        <ProjectToBuild Include="$(UWPSolutionFile)">
+            <AdditionalProperties>Platform=x64</AdditionalProperties>  
+        </ProjectToBuild>
+        <ProjectToBuild Include="$(UWPSolutionFile)">
+            <AdditionalProperties>Platform=x86</AdditionalProperties>  
+        </ProjectToBuild>
+        <ProjectToBuild Include="$(UWPSolutionFile)">
+            <AdditionalProperties>Platform=ARM</AdditionalProperties>  
+        </ProjectToBuild>
+    </ItemGroup>
+    
+    <Target Name="Clear">
+        <DeleteTree Directories=".\Library\Unicorn\bin" />
+        <DeleteTree Directories=".\Library\Unicorn\obj" />
+        <DeleteTree Directories=".\Library\Unicorn.DotNet\bin" />
+        <DeleteTree Directories=".\Library\Unicorn.DotNet\obj" />
+        <DeleteTree Directories=".\Library\Unicorn.UWP\bin" />
+        <DeleteTree Directories=".\Library\Unicorn.UWP\obj" />
+    </Target>
+
+    <Target Name="RestoreNuGetPackage">
+        <NuGetRestore Solution="$(NetStandardSolutionFile)"/>
+        <NuGetRestore Solution="$(DotNetSolutionFile)"/>
+        <NuGetRestore Solution="$(UWPSolutionFile)"/>
+    </Target>
+
+    <Target Name="BuildSolution">
+        <MSBuild Projects="@(ProjectToBuild)"
+                 Properties="Configuration=$(Configuration)"
+                 Targets="$(Targets)">
+        </MSBuild>
+    </Target>
+    
+    <Target Name="CreateNuGetPackage">
+        <NuGetPack File="Package.nuspec" />
+    </Target>
+
+    <Target Name="Build">
+        <CallTarget Targets="Clear" />
+        <CallTarget Targets="RestoreNuGetPackage" />
+        <CallTarget Targets="BuildSolution" />
+        <CallTarget Targets="CreateNuGetPackage" />
+    </Target>
+</Project>

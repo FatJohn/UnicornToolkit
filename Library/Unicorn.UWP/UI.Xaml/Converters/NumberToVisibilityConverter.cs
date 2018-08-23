@@ -33,6 +33,12 @@ namespace Unicorn
                 return Visibility.Collapsed;
             }
 
+            var decimalNumber = System.Convert.ToDecimal(value);
+            if (decimalNumber > 0)
+            {
+                return Visibility.Visible;
+            }
+
             var s = value as string;
             if (double.TryParse(s, out double number))
             {
@@ -45,6 +51,17 @@ namespace Unicorn
         public object ConvertBack(object value, Type targetType, object parameter, string language)
         {
             throw new NotImplementedException();
+        }
+
+        public static bool IsNumeric(object targetObject)
+        {
+            return targetObject is sbyte || targetObject is byte ||
+                   targetObject is short || targetObject is ushort ||
+                   targetObject is int || targetObject is uint ||
+                   targetObject is long || targetObject is ulong ||
+                   targetObject is double || targetObject is char ||
+                   targetObject is decimal || targetObject is float ||
+                   targetObject is double;
         }
     }
 }

@@ -80,8 +80,8 @@ namespace Unicorn.UI.Xaml.Controls
 
             if (rootBorder != null)
             {
-                rootBorder.Width = Window.Current.Bounds.Width;
-                rootBorder.Height = Window.Current.Bounds.Height;
+                rootBorder.TrySetWidth(Window.Current.Bounds.Width);
+                rootBorder.TrySetHeight(Window.Current.Bounds.Height);
             }
         }
 
