@@ -49,7 +49,7 @@ namespace Unicorn.ServiceModel
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            if (value.GetType() != typeof(DateTime))
+            if (value.GetType() != typeof(DateTimeOffset))
             {
                 writer.WriteValue(0);
                 return;
