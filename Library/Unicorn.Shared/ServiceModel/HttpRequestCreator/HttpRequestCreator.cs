@@ -130,11 +130,13 @@ namespace Unicorn.ServiceModel
                 case HttpParameterMethod.Options:
                     result = HttpMethod.Options;
                     break;
-#if WINDOWS_UWP
                 case HttpParameterMethod.Patch:
+#if WINDOWS_UWP
                     result = HttpMethod.Patch;
-                    break;
+#else
+                    result = new HttpMethod("PATCH");
 #endif
+                    break;
                 case HttpParameterMethod.Post:
                     result = HttpMethod.Post;
                     break;
