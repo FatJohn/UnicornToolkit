@@ -428,11 +428,21 @@ namespace Unicorn
             try
             {
                 await folder.DeleteAsync(StorageDeleteOption.PermanentDelete);
-                if (needKeepFodler)
+                if (!needKeepFodler)
                 {
-                    var parentFolder = await folder.GetParentAsync();
-                    await CreateFolderLazy(parentFolder, folderName);
+                    return;
                 }
+
+                if (IsAbsolutePath(folderName))
+                {
+                    folder = await folder.GetParentAsync();
+                }
+                else
+                {
+                    folder = GetApplicationDataFolder(location);
+                }
+
+                await folder.CreateFolderLazy(folderName);
             }
 #if DEBUG
             catch (IOException)
