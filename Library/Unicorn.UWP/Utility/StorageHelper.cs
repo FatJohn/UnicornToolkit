@@ -40,7 +40,6 @@ namespace Unicorn
         Roaming,
         Temp,
         Install,
-        External,
     }
 
     public static class StorageHelper
@@ -339,10 +338,23 @@ namespace Unicorn
         /// 建立完整的子路徑
         /// </summary>
         /// <param name="storage">要建立路徑的跟目錄, EX: ApplicationData.LocalFolder</param>
-        /// <param name="filePath">完整檔案名稱</param>
+        /// <param name="filePath">完整檔案名稱，如果是純資料夾的路徑，請在最後面補上\\，否則不會建立成功</param>
         /// <returns>最後一個建立的路徑的Handle</returns>
         public static async Task<StorageFolder> CreateFolderLazy(this StorageFolder storage, string filePath)
         {
+            // 如果傳進來的是與原始 storage 一樣的完整路徑，為了要能正確的建立子資料夾，必須將原先的路徑取代掉，
+            // 否則依照 UWP 的 Storage 存取模式會建立資料夾失敗（因為權限的問題）
+            if (IsAbsolutePath(filePath))
+            {
+                filePath = filePath.Replace(storage.Path, string.Empty);
+            }
+
+            // 避免要建立的資料夾與原來的路徑是不相同的，取代後還是絕對路徑再檢查一次
+            if (IsAbsolutePath(filePath))
+            {
+                return storage;
+            }
+
             string directoryName = Path.GetDirectoryName(filePath);
             if (string.IsNullOrEmpty(directoryName))
             {
@@ -407,20 +419,19 @@ namespace Unicorn
 
         public static async Task DeleteFolder(string folderName, bool needKeepFodler = false, ApplicationDataLocation location = ApplicationDataLocation.Local)
         {
-            var appDataFolder = GetApplicationDataFolder(location);
+            StorageFolder folder = await GetFolder(folderName, location).ConfigureAwait(false);
+            if (folder == null)
+            {
+                return;
+            }
 
             try
             {
-                var folder = await appDataFolder.TryGetItemAsync(folderName) as StorageFolder;
-                if (folder == null)
-                {
-                    return;
-                }
-
                 await folder.DeleteAsync(StorageDeleteOption.PermanentDelete);
                 if (needKeepFodler)
                 {
-                    await CreateFolderLazy(appDataFolder, folderName);
+                    var parentFolder = await folder.GetParentAsync();
+                    await CreateFolderLazy(parentFolder, folderName);
                 }
             }
 #if DEBUG
@@ -912,20 +923,6 @@ namespace Unicorn
             try
             {
                 StorageFolder storageFolder = GetApplicationDataFolder(location);
-
-                if (location == ApplicationDataLocation.External)
-                {
-                    var folders = await storageFolder.GetFoldersAsync();
-                    if (folders.Count < 0)
-                    {
-                        return null;
-                    }
-                    else
-                    {
-                        storageFolder = folders.FirstOrDefault();
-                    }
-                }
-
                 return await GetFolderSpaceInfo(storageFolder);
             }
 #if DEBUG
