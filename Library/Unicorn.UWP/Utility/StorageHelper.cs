@@ -889,7 +889,7 @@ namespace Unicorn
             {
                 try
                 {
-                    await file.CopyAsync(dest, file.Name, NameCollisionOption.ReplaceExisting);
+                    await file.MoveAsync(dest, file.Name, NameCollisionOption.ReplaceExisting);
                 }
 #if DEBUG
                 catch (IOException)
