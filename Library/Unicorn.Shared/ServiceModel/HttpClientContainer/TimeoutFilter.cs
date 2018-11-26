@@ -11,7 +11,7 @@ using Windows.Web.Http.Filters;
 
 namespace Unicorn
 {
-    internal class TimeoutFilter : IHttpFilter
+    public class TimeoutFilter : IHttpFilter
     {
         private readonly IHttpFilter _innerFilter;
 

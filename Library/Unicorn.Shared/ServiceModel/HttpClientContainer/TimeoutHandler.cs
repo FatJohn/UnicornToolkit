@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Unicorn
 {
-    internal class TimeoutHandler : DelegatingHandler
+    public class TimeoutHandler : DelegatingHandler
     {
         public TimeSpan DefaultTimeout { get; set; } = TimeSpan.FromSeconds(100);
 
