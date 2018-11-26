@@ -302,11 +302,22 @@ namespace Unicorn.ServiceModel
                 var packResult = HttpParameterPacker.CreatePackedParameterResult(parameter);
 
                 // 2. Send & Get response
-                httpResponse = await SendRequest(parameter, () => PackParameterToHttpReqeustMessage(parameter, requestUrl, packResult)).ConfigureAwait(false);
-
-                if (httpResponse == null)
+                try
                 {
-                    return new ParseResult<TResult>(new ParseError(true));
+                    httpResponse = await SendRequest(parameter, () => PackParameterToHttpReqeustMessage(parameter, requestUrl, packResult)).ConfigureAwait(false);
+                }
+                catch (ObjectDisposedException ex)
+                {
+                    // 還沒開始就被 cancel 了
+                    return new ParseResult<TResult>(new ParseError(ex.HResult, "Operation already Canceled", true));
+                }
+                catch (OperationCanceledException ex)
+                {
+                    return new ParseResult<TResult>(new ParseError(ex.HResult, ex.Message, true));
+                }
+                catch (TimeoutException ex)
+                {
+                    return new ParseResult<TResult>(new ParseError(ex.HResult, ex.Message));
                 }
 
                 // 4. Save cache
@@ -331,7 +342,7 @@ namespace Unicorn.ServiceModel
             }
             catch (Exception ex)
             {
-                return new ParseResult<TResult>(new ParseError(ex.Message));
+                return new ParseResult<TResult>(new ParseError(ex.HResult, ex.Message));
             }
             finally
             {
@@ -356,19 +367,33 @@ namespace Unicorn.ServiceModel
             var retryControl = parameter.Options.Retry;
             var retryRemain = retryControl.MaxRetryTimes;
             HttpResponseMessage httpResponse = null;
+            Exception lastOccurException = null;
 
             do
             {
+                lastOccurException = null;
+
                 var httpRequestMessage = httpRequestMessageDelegate();
                 if (httpRequestMessage == null)
                 {
                     break;
                 }
 
-                httpResponse = await SendRequest(httpRequestMessage).ConfigureAwait(false);
+                httpRequestMessage.SetTimeout(parameter.Timeout);
+
+                try
+                {
+                    httpResponse = await SendRequest(httpRequestMessage).ConfigureAwait(false);
+                }
+                catch (Exception ex)
+                {
+                    lastOccurException = ex;
+                }
+
+                httpRequestMessage.Dispose();
+
                 if (cancellationTokenSource != null && cancellationTokenSource.IsCancellationRequested)
                 {
-                    httpRequestMessage.Dispose();
                     // 被 cancel 了就不要有回傳的東西了
                     httpResponse?.Dispose();
                     httpResponse = null;
@@ -377,20 +402,22 @@ namespace Unicorn.ServiceModel
 
                 if (httpResponse != null && httpResponse.IsSuccessStatusCode)
                 {
-                    httpRequestMessage.Dispose();
                     break;
                 }
 
                 if (retryRemain <= 0)
                 {
-                    httpRequestMessage.Dispose();
                     break;
                 }
 
                 await Task.Delay(retryControl.Interval).ConfigureAwait(false);
-                httpRequestMessage.Dispose();
             }
             while (retryRemain-- > 0);
+
+            if (lastOccurException != null)
+            {
+                throw lastOccurException;
+            }
 
             return httpResponse;
         }
@@ -413,26 +440,18 @@ namespace Unicorn.ServiceModel
             catch (ObjectDisposedException)
             {
                 asyncOperationWithProgress.Cancel();
-                return null;
+                throw;
             }
 
-            try
-            {
-                return await asyncOperationWithProgress;
-            }
-            catch (Exception)
-            {
-                return null;
-            }
+            return await asyncOperationWithProgress;
 #else
-            try
+            if (cancellationTokenSource == null)
             {
-                var cancellationToken = cancellationTokenSource == null ? CancellationToken.None : cancellationTokenSource.Token;
-                return await httpClient.SendAsync(httpRequestMessage, HttpCompletionOption.ResponseContentRead, cancellationToken);
+                return await httpClient.SendAsync(httpRequestMessage);
             }
-            catch (Exception)
+            else
             {
-                return null;
+                return await httpClient.SendAsync(httpRequestMessage, cancellationTokenSource.Token);
             }
 #endif
         }

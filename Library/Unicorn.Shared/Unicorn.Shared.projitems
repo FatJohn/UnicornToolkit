@@ -38,8 +38,11 @@
     <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\Attribute\HttpPropertyFor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\Attribute\HttpRawByteArrayPropertyAttribute.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\Attribute\HttpRawStringPropertyAttribute.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\Extension\HttpRequestMessageExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\Extension\HttpResponseMessageExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\HttpClientContainer\HttpClientContainer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\HttpClientContainer\TimeoutFilter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\HttpClientContainer\TimeoutHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\HttpFlow\IHttpPreFlow.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\HttpRequestCreator\HttpRequestCreator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\JsonConverter\BooleanJsonConverter.cs" />

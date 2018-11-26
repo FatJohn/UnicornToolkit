@@ -13,10 +13,11 @@ namespace DemoApp.DotNet
         {
             PlatformService.Log = new NullLogService();
 
-            var r = Task.Run(async () =>
+            var resutl = Task.Run(async () =>
             {
                 var parameter = new GoogleSearchParameter
                 {
+                    Timeout = TimeSpan.FromMilliseconds(300),
                     q = "周杰倫",
                 };
                 var service = new GoogleSearchService();
@@ -25,7 +26,7 @@ namespace DemoApp.DotNet
                 return result;
             }).Result;
 
-            Console.WriteLine(r.Content);
+            Console.WriteLine(resutl.Content);
             Console.ReadLine();
         }
     }

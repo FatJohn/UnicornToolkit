@@ -4,6 +4,7 @@
     <TargetFramework>netstandard1.3</TargetFramework>
     <AssemblyVersion>1.0.3.0</AssemblyVersion>
     <FileVersion>1.0.3.0</FileVersion>
+    <LangVersion>7.2</LangVersion>
   </PropertyGroup>
 
   <Import Project="..\Unicorn.Shared\Unicorn.Shared.projitems" Label="Shared" />
