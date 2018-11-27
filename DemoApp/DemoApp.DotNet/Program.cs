@@ -13,7 +13,7 @@ namespace DemoApp.DotNet
         {
             PlatformService.Log = new NullLogService();
 
-            var resutl = Task.Run(async () =>
+            var result = Task.Run(async () =>
             {
                 var parameter = new GoogleSearchParameter
                 {
@@ -21,12 +21,10 @@ namespace DemoApp.DotNet
                     q = "周杰倫",
                 };
                 var service = new GoogleSearchService();
-                var result = await service.InvokeAsync(parameter);
-
-                return result;
+                return await service.InvokeAsync(parameter);
             }).Result;
 
-            Console.WriteLine(resutl.Content);
+            Console.WriteLine(result.Content);
             Console.ReadLine();
         }
     }
