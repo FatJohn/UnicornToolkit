@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>UnicornToolkit</id>
-    <version>2.0.7</version>
+    <version>2.0.8</version>
     <title>UnicornToolkit</title>
     <authors>FatJohn</authors>
     <owners>FatJohn</owners>
@@ -11,7 +11,7 @@
       Please visit ProjectSite (my Github sourceCode page) to see demonstration of how to use UnicornToolkit to connect a web api quickly.
     </description>
     <releaseNotes>
-      1. fix StorageHelper MoveFile is not really move but copy.
+      1. add Timeout property to HttpParameter
     </releaseNotes>
     <summary>
       This library is mainly to provide a simple way connect http service.
