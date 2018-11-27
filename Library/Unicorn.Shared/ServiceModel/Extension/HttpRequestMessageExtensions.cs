@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2016 John Shu
+﻿// Copyright (c) 2018 John Shu
 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -19,38 +19,45 @@
 // SOFTWARE
 
 using System;
+using System.Text;
+using System.Threading.Tasks;
+using System.Linq;
 #if WINDOWS_UWP
 using Windows.Web.Http;
-using Windows.Web.Http.Filters;
+using System.Runtime.InteropServices.WindowsRuntime;
 #else
 using System.Net.Http;
 #endif
 
-namespace Unicorn.ServiceModel
+namespace Unicorn
 {
-    public class HttpClientContainer
+    public static class HttpRequestMessageExtensions
     {
-        private static Lazy<HttpClient> httpClientInstance = new Lazy<HttpClient>(() =>
-        {
-#if WINDOWS_UWP
-            var httpFilter = new HttpBaseProtocolFilter();
-            httpFilter.CacheControl.ReadBehavior = HttpCacheReadBehavior.MostRecent;
-            httpFilter.CacheControl.WriteBehavior = HttpCacheWriteBehavior.NoCache;
-            var timeoutFilter = new TimeoutFilter(httpFilter);
-            return new HttpClient(timeoutFilter);
-#else
-            var timeoutHandler = new TimeoutHandler();
-            var httpClient = new HttpClient(timeoutHandler);
-            httpClient.Timeout = System.Threading.Timeout.InfiniteTimeSpan;
-            httpClient.DefaultRequestHeaders.CacheControl = new System.Net.Http.Headers.CacheControlHeaderValue();
-            httpClient.DefaultRequestHeaders.CacheControl.NoCache = true;
-            return httpClient;
-#endif
-        });
+        private static string TimeoutPropertyKey = "RequestTimeout";
 
-        public static HttpClient Get()
+        public static void SetTimeout(this HttpRequestMessage request, TimeSpan timeout)
         {
-            return httpClientInstance.Value;
+            if (request == null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+
+            request.Properties[TimeoutPropertyKey] = timeout;
+        }
+
+        public static TimeSpan? GetTimeout(this HttpRequestMessage request)
+        {
+            if (request == null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+
+            if (request.Properties.TryGetValue(TimeoutPropertyKey, out var value) && value is TimeSpan timeout)
+            {
+                return timeout;
+            }
+                
+            return null;
         }
     }
 }

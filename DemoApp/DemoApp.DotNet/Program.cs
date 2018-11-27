@@ -13,19 +13,18 @@ namespace DemoApp.DotNet
         {
             PlatformService.Log = new NullLogService();
 
-            var r = Task.Run(async () =>
+            var result = Task.Run(async () =>
             {
                 var parameter = new GoogleSearchParameter
                 {
+                    Timeout = TimeSpan.FromMilliseconds(300),
                     q = "周杰倫",
                 };
                 var service = new GoogleSearchService();
-                var result = await service.InvokeAsync(parameter);
-
-                return result;
+                return await service.InvokeAsync(parameter);
             }).Result;
 
-            Console.WriteLine(r.Content);
+            Console.WriteLine(result.Content);
             Console.ReadLine();
         }
     }

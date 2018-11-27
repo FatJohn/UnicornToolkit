@@ -19,14 +19,23 @@ namespace DemoApp.UWP
 
         private async void Button_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
-            var parameter = new LoginParameter
+            //var parameter = new LoginParameter
+            //{
+            //    Date = DateTime.Now,
+            //    UserId = "myUserId",
+            //    Password = "myPassword",
+            //};
+
+            //var service = new LoginService();
+            //var result = await service.InvokeAsync(parameter);
+
+            var parameter = new GoogleSearchParameter
             {
-                Date = DateTime.Now,
-                UserId = "myUserId",
-                Password = "myPassword",
+                Timeout = TimeSpan.FromMilliseconds(100),
+                q = "我是誰",
             };
 
-            var service = new LoginService();
+            var service = new GoogleSearchService();
             var result = await service.InvokeAsync(parameter);
         }
     }

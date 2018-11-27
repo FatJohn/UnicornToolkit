@@ -19,6 +19,7 @@
 // SOFTWARE
 
 using Newtonsoft.Json;
+using System;
 
 namespace Unicorn.ServiceModel
 {
@@ -61,5 +62,14 @@ namespace Unicorn.ServiceModel
         [JsonIgnore]
         [HttpIgnore]
         public HttpServiceParameterOption Options { get; private set; } = new HttpServiceParameterOption();
+
+        /// <summary>
+        /// 代表這個 Request 會 Timeout 的時間
+        /// 預設值是 100 秒
+        /// </summary>
+        /// <remarks>建議不要小於 300 豪秒</remarks>
+        [JsonIgnore]
+        [HttpIgnore]
+        public TimeSpan Timeout { get; set; } = TimeSpan.FromSeconds(100);
     }
 }
