@@ -43,6 +43,9 @@ namespace Unicorn.ServiceModel
 #endif
 
     public abstract class BaseHttpService<TResult, TParameter, TParser>
+#if WINDOWS_UWP
+        : IProgress<HttpProgress>
+#endif
         where TParameter : HttpServiceParameter
         where TParser : BaseParser<TResult, HttpResponseMessage>, new()
     {
@@ -426,38 +429,26 @@ namespace Unicorn.ServiceModel
         {
             var httpClient = HttpClientContainer.Get();
 
-#if WINDOWS_UWP
-            var asyncOperationWithProgress = httpClient.SendRequestAsync(httpRequestMessage);
-            asyncOperationWithProgress.Progress = HttpClientProgressCallback;
-
-            try
-            {
-                cancellationTokenSource?.Token.Register(() =>
-                {
-                    asyncOperationWithProgress.Cancel();
-                });
-            }
-            catch (ObjectDisposedException)
-            {
-                asyncOperationWithProgress.Cancel();
-                throw;
-            }
-
-            return await asyncOperationWithProgress;
-#else
             if (cancellationTokenSource == null)
             {
+#if WINDOWS_UWP
+                return await httpClient.SendRequestAsync(httpRequestMessage).AsTask(this);
+#else
                 return await httpClient.SendAsync(httpRequestMessage);
+#endif
             }
             else
             {
+#if WINDOWS_UWP
+                return await httpClient.SendRequestAsync(httpRequestMessage).AsTask(cancellationTokenSource.Token, this);
+#else
                 return await httpClient.SendAsync(httpRequestMessage, cancellationTokenSource.Token);
-            }
 #endif
+            }
         }
 
 #if WINDOWS_UWP
-        private void HttpClientProgressCallback(IAsyncOperationWithProgress<HttpResponseMessage, HttpProgress> result, HttpProgress progress)
+        public void Report(HttpProgress progress)
         {
             double? progressValue = null;
 
