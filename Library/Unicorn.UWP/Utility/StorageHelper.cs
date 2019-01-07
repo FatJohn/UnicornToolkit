@@ -505,9 +505,8 @@ namespace Unicorn
         {
             try
             {
-                var storage = GetApplicationDataFolder(location);
-                var file = await storage.CreateFileAsync(filePath, CreationCollisionOption.OpenIfExists);
-                return file.Path;
+                var file = await GetFile(filePath, location);
+                return file?.Path;
             }
 #if DEBUG
             catch (IOException)
