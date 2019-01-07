@@ -505,7 +505,6 @@ namespace Unicorn
         {
             try
             {
-                var storage = GetApplicationDataFolder(location);
                 var file = await GetFile(filePath, location);
                 return file?.Path;
             }
