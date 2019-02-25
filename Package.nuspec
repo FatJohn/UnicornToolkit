@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>UnicornToolkit</id>
-    <version>2.0.9</version>
+    <version>2.0.10</version>
     <title>UnicornToolkit</title>
     <authors>FatJohn</authors>
     <owners>FatJohn</owners>
@@ -20,7 +20,7 @@
     <iconUrl>https://nuget.org/Content/Images/packageDefaultIcon-50x50.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <licenseUrl>https://opensource.org/licenses/MIT</licenseUrl>
-    <copyright>Copyright  2018</copyright>
+    <copyright>Copyright 2019</copyright>
     <dependencies>
       <group targetFramework="netstandard1.3">
         <dependency id="Newtonsoft.Json" version="10.0.2" />
