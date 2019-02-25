@@ -85,25 +85,12 @@ namespace Unicorn
             // 在 Phone 上即便是連上一個無法對外的無線網路，在 GetNetworkConnectivityLevel() 仍然會取得 NetworkConnectivityLevel.InternetAccess
             // 但此狀況不在正常使用範圍
             // PS: 要測試 Phone 的狀態記得用實機，模擬器的狀態不準（即便你開啟飛航模式或用模擬器的網路模擬讓網路停止）
-            bool result = false;
+            
             var connectionProfile = NetworkInformation.GetInternetConnectionProfile();
-            if (connectionProfile != null)
-            {
-                switch (connectionProfile.GetNetworkConnectivityLevel())
-                {
-                    case NetworkConnectivityLevel.None:
-                    case NetworkConnectivityLevel.LocalAccess:
-                        break;
-                    case NetworkConnectivityLevel.ConstrainedInternetAccess:
-                        result = true;
-                        break;
-                    case NetworkConnectivityLevel.InternetAccess:
-                        result = true;
-                        break;
-                }
-            }
 
-            return result;
+            // The profile for the connection currently used to connect the machine to the Internet, 
+            // or null if there is no connection profile with a suitable connection.
+            return connectionProfile != null;
         }
 
         /// <summary>
