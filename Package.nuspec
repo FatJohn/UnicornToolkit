@@ -11,7 +11,7 @@
       Please visit ProjectSite (my Github sourceCode page) to see demonstration of how to use UnicornToolkit to connect a web api quickly.
     </description>
     <releaseNotes>
-      1. fix StorgeHelper.GetFilePath will create a empty file.
+      1. fixed network available check logic.
     </releaseNotes>
     <summary>
       This library is mainly to provide a simple way connect http service.
