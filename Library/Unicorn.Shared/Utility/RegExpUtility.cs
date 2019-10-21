@@ -66,7 +66,8 @@ namespace Unicorn
                     regex = new Regex(@"^[_a-zA-Z0-9-]");
                     break;
                 case RegExValideType.Email:
-                    regex = new Regex("^[_a-z0-9-]+([.][_a-z0-9-]+)*@[a-z0-9-]+([.][a-z0-9-]+)*$");
+                    regex = new Regex(@"^(?("")("".+?(?<!\\)""@)|(([0-9a-z]((\.(?!\.))|[-!#\$%&'\*\+/=\?\^`\{\}\|~\w])*)(?<=[0-9a-zA-Z])@))" +
+                                      @"(?(\[)(\[(\d{1,3}\.){3}\d{1,3}\])|(([0-9a-zA-Z][-0-9a-zA-Z]*[0-9a-zA-Z]*\.)+[a-z0-9A-Z][\-a-z0-9A-Z]{0,22}[a-z0-9A-Z]))$");
                     break;
                 case RegExValideType.Numbers:
                     regex = new Regex("^[0-9]+$");
