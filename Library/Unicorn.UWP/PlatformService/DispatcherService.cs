@@ -27,6 +27,8 @@ namespace Unicorn
 {
     public class DispatcherService : IDispatcherService
     {
+        public CoreDispatcherPriority DefaultPriority { get; set; } = CoreDispatcherPriority.Normal;
+
         public bool IsRunOnUIThread
         {
             get
@@ -52,7 +54,7 @@ namespace Unicorn
                     return;
                 }
 
-                CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => action());
+                CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(DefaultPriority, () => action());
             }
             catch (Exception)
             {
@@ -68,7 +70,7 @@ namespace Unicorn
                     return;
                 }
 
-                CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () => await asyncAction());
+                CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(DefaultPriority, async () => await asyncAction());
             }
             catch (Exception)
             {
@@ -85,7 +87,7 @@ namespace Unicorn
                     return;
                 }
 
-                await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => action());
+                await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(DefaultPriority, () => action());
             }
             catch (Exception)
             {
@@ -102,7 +104,7 @@ namespace Unicorn
                 }
 
                 TaskCompletionSource<bool> completionSource = new TaskCompletionSource<bool>();
-                await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
+                await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(DefaultPriority, async () =>
                 {
                     await asyncAction();
                     completionSource.TrySetResult(true);
@@ -124,7 +126,7 @@ namespace Unicorn
                 }
 
                 TaskCompletionSource<T> completionSource = new TaskCompletionSource<T>();
-                await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(DefaultPriority, () =>
                 {
                     var result = func();
                     completionSource.TrySetResult(result);
@@ -147,7 +149,7 @@ namespace Unicorn
                 }
 
                 TaskCompletionSource<T> completionSource = new TaskCompletionSource<T>();
-                await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
+                await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(DefaultPriority, async () =>
                 {
                     var result = await func();
                     completionSource.TrySetResult(result);
