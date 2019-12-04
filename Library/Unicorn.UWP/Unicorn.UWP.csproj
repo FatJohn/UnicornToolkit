@@ -117,6 +117,7 @@
     <Compile Include="Extension\ListViewBaseExtention.cs" />
     <Compile Include="Extension\MessageDialogExtensions.cs" />
     <Compile Include="Extension\PlaybackMediaMarkerSequenceExtensions.cs" />
+    <Compile Include="Extension\StorageFolderExtension.cs" />
     <Compile Include="Extension\StoryboardExtension.cs" />
     <Compile Include="Extension\StringExtension.cs" />
     <Compile Include="Extension\TypeInfoExtensions.cs" />

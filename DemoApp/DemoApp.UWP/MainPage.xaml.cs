@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Threading.Tasks;
-using Unicorn.ServiceModel;
+using Unicorn;
+using Windows.Storage;
 using Windows.UI.Xaml.Controls;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
@@ -37,6 +37,11 @@ namespace DemoApp.UWP
 
             var service = new GoogleSearchService();
             var result = await service.InvokeAsync(parameter);
+
+
+            await StorageHelper.CopyFolderFromInstalledLocation("assets");
+            await StorageHelper.GetFilesInFolder("assets\\LockScreenLogo.scale-200.png", ApplicationData.Current.LocalFolder);
+            await StorageHelper.CopyFolder(ApplicationData.Current.LocalFolder, ApplicationData.Current.LocalFolder);
         }
     }
 }

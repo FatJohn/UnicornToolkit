@@ -116,7 +116,7 @@ namespace Unicorn
         }
 
         /// <summary>
-        /// 負治安裝目錄的資料夾到目的地
+        /// 複製安裝目錄的資料夾到目的地
         /// </summary>
         /// <param name="path"></param>
         /// <param name="location"></param>
@@ -136,7 +136,8 @@ namespace Unicorn
             destination = await destination.GetFolderAsync(path);
             root = await root.GetFolderAsync(path);
 
-            IReadOnlyList<IStorageItem> items = await root.GetItemsAsync();
+            IReadOnlyList<IStorageItem> items = await root.GetSafeItemsAsync();
+
             foreach (IStorageItem item in items)
             {
                 if (item.IsOfType(StorageItemTypes.File))
@@ -651,28 +652,36 @@ namespace Unicorn
                 return null;
             }
 
-            StorageFile file = null;
-            StorageFolder folder = root;
-
-            var items = await folder.GetItemsAsync();
-
-            foreach (var item in items)
+            try
             {
-                if (item.IsOfType(StorageItemTypes.File))
+                StorageFile file = null;
+                StorageFolder folder = root;
+
+                var items = await folder.GetSafeItemsAsync();
+
+                foreach (var item in items)
                 {
-                    if (item.Name == fileName)
+                    if (item.IsOfType(StorageItemTypes.File))
                     {
-                        file = item as StorageFile;
-                        break;
+                        if (item.Name == fileName)
+                        {
+                            file = item as StorageFile;
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        file = await GetFilesInFolder(fileName, item as StorageFolder);
                     }
                 }
-                else
-                {
-                    file = await GetFilesInFolder(fileName, item as StorageFolder);
-                }
-            }
 
-            return file;
+                return file;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+                return null;
+            }
         }
 
         public static async Task<StorageFolder> GetFolder(string folderName, ApplicationDataLocation location = ApplicationDataLocation.Local)
@@ -804,7 +813,7 @@ namespace Unicorn
 
             try
             {
-                var sourceItmes = await sourceFolder.GetItemsAsync();
+                var sourceItmes = await sourceFolder.GetSafeItemsAsync();
 
                 foreach (var sourceItem in sourceItmes)
                 {
