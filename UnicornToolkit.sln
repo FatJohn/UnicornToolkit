@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27130.2026
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30320.27
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Library", "Library", "{20B379A5-10CE-40E3-B621-17ACEA21AB74}"
 EndProject
@@ -28,6 +28,8 @@ Global
 		Library\Unicorn.Shared\Unicorn.Shared.projitems*{2a5998e5-3a5a-4d48-b0b9-d2fa5354d0b9}*SharedItemsImports = 13
 		DemoApp\DemoApp.Shared\DemoApp.Shared.projitems*{43f83301-fc7a-4431-be1e-9bc914ab1482}*SharedItemsImports = 4
 		Library\Unicorn.Shared\Unicorn.Shared.projitems*{82b5a836-f71f-481f-8140-0d9ebad8bf43}*SharedItemsImports = 4
+		DemoApp\DemoApp.Shared\DemoApp.Shared.projitems*{96c733ce-7af4-4d7f-bdc9-2333270c9607}*SharedItemsImports = 5
+		Library\Unicorn.Shared\Unicorn.Shared.projitems*{b4325eef-8209-4bbb-b498-0dcd94c52dda}*SharedItemsImports = 5
 		DemoApp\DemoApp.Shared\DemoApp.Shared.projitems*{c1b26942-d87d-4f46-b6a6-3d3f6652f7b6}*SharedItemsImports = 4
 		DemoApp\DemoApp.Shared\DemoApp.Shared.projitems*{ccf410b2-4144-4d42-b2ff-49e5a57e40f9}*SharedItemsImports = 13
 		Library\Unicorn.Shared\Unicorn.Shared.projitems*{d8891be4-8f87-4d79-9181-07a9538c8b74}*SharedItemsImports = 4
