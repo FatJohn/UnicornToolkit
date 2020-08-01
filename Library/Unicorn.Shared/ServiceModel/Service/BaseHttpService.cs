@@ -106,21 +106,21 @@ namespace Unicorn.ServiceModel
         {
         }
 
-        public virtual async Task<ParseResult<TResult>> InvokeAsync(TParameter parameter, CancellationTokenSource cancellationTokenSource = null)
+        public virtual Task<ParseResult<TResult>> InvokeAsync(TParameter parameter, CancellationTokenSource cancellationTokenSource = null)
         {
             this.cancellationTokenSource = cancellationTokenSource;
 
             if (this.cancellationTokenSource == null)
             {
-                return await Task.Run(() => Invoke(parameter)).ConfigureAwait(false);
+                return Invoke(parameter);
             }
 
             if (this.cancellationTokenSource.IsCancellationRequested)
             {
-                return new ParseResult<TResult>(new ParseError(true));
+                return Task.FromResult(new ParseResult<TResult>(new ParseError(true)));
             }
 
-            return await Task.Run(() => Invoke(parameter)).ConfigureAwait(false);
+            return Invoke(parameter);
         }
 
         protected virtual Task<ParseResult<TResult>> Invoke(TParameter parameter)
@@ -292,7 +292,7 @@ namespace Unicorn.ServiceModel
 
             try
             {
-                if (PlatformService.NetworkInformation.IsNetworkAvailable == false)
+                if (PlatformService.NetworkInformation?.IsNetworkAvailable == false)
                 {
                     return new ParseResult<TResult>(new ParseError(true));
                 }
