@@ -19,17 +19,10 @@
 // SOFTWARE
 
 using System;
-using System.Text;
-using System.Linq;
-#if WINDOWS_UWP
-using Windows.Web.Http;
-using Windows.Web.Http.Headers;
-using System.Runtime.InteropServices.WindowsRuntime;
-#else
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-#endif
+using System.Text;
 
 namespace Unicorn.ServiceModel
 {
@@ -56,11 +49,7 @@ namespace Unicorn.ServiceModel
 
             if (parameter.HttpContentType != null && httpRequest.Content?.Headers != null)
             {
-#if WINDOWS_UWP
-                httpRequest.Content.Headers.ContentType = new HttpMediaTypeHeaderValue(parameter.HttpContentType);
-#else
                 httpRequest.Content.Headers.ContentType = new MediaTypeHeaderValue(parameter.HttpContentType);
-#endif
             }
 
             LogParameterPackResult(httpRequest, packResult, requestId);
@@ -131,11 +120,7 @@ namespace Unicorn.ServiceModel
                     result = HttpMethod.Options;
                     break;
                 case HttpParameterMethod.Patch:
-#if WINDOWS_UWP
-                    result = HttpMethod.Patch;
-#else
                     result = new HttpMethod("PATCH");
-#endif
                     break;
                 case HttpParameterMethod.Post:
                     result = HttpMethod.Post;
@@ -153,21 +138,13 @@ namespace Unicorn.ServiceModel
             // 三種 POST 的狀況只會執行其中一種，是互斥的
             if (packResult.MutliPartParameterMap.Count > 0)
             {
-#if WINDOWS_UWP
-                var multiPartContent = new HttpMultipartFormDataContent($"---------------{DateTime.Now.Ticks.ToString("x")}");
-#else
                 var multiPartContent = new MultipartFormDataContent($"---------------{DateTime.Now.Ticks.ToString("x")}");
-#endif
                 foreach (var kv in packResult.MutliPartParameterMap)
                 {
                     var multiPartPackItem = kv.Value;
-#if WINDOWS_UWP
-                    var bufferContent = new HttpBufferContent(multiPartPackItem.Content.AsBuffer());
-                    bufferContent.Headers.ContentType = new HttpMediaTypeHeaderValue(multiPartPackItem.ContentType);
-#else
                     var bufferContent = new ByteArrayContent(multiPartPackItem.Content);
                     bufferContent.Headers.ContentType = new MediaTypeHeaderValue(multiPartPackItem.ContentType);
-#endif
+                    
                     if (!string.IsNullOrEmpty(multiPartPackItem.FileName))
                     {
                         multiPartContent.Add(bufferContent, kv.Key, multiPartPackItem.FileName);
@@ -183,27 +160,15 @@ namespace Unicorn.ServiceModel
             else if (packResult.PostRawStringList.Count > 0)
             {
                 var contentString = string.Concat(packResult.PostRawStringList);
-#if WINDOWS_UWP
-                httpRequest.Content = new HttpStringContent(contentString);
-#else
                 httpRequest.Content = new StringContent(contentString);
-#endif
             }
             else if (packResult.PostRawData != null)
             {
-#if WINDOWS_UWP
-                httpRequest.Content = new HttpBufferContent(packResult.PostRawData.AsBuffer());
-                httpRequest.Content.Headers.ContentType = new HttpMediaTypeHeaderValue("application/octet-stream");
-#else
                 httpRequest.Content = new ByteArrayContent(packResult.PostRawData);
                 httpRequest.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
-#endif
             }
             else if (packResult.PostParameterMap.Count > 0)
             {
-#if WINDOWS_UWP
-                httpRequest.Content = new HttpFormUrlEncodedContent(packResult.PostParameterMap);
-#else
                 // FormUrlEncodedContent has limit length so we have to do ourselves
                 var sb = new StringBuilder();
                 foreach (var pair in packResult.PostParameterMap)
@@ -217,7 +182,6 @@ namespace Unicorn.ServiceModel
                 }
 
                 httpRequest.Content = new StringContent(sb.ToString(), Encoding.UTF8, "application/x-www-form-urlencoded");
-#endif
             }
         }
 

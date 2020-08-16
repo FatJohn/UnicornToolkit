@@ -1,9 +1,5 @@
-﻿#if !WINDOWS_UWP
-
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Net.Http;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -42,4 +38,3 @@ namespace Unicorn
         }
     }
 }
-#endif

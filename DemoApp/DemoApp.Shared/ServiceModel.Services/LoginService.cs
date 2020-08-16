@@ -1,17 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Unicorn.ServiceModel;
-using Unicorn.Net;
-using Unicorn;
-using Newtonsoft.Json;
-#if WINDOW_UWP
-using Windows.Web.Http;
-#else
+﻿using Newtonsoft.Json;
+using System;
 using System.Net.Http;
-#endif
+using System.Threading.Tasks;
+using Unicorn;
+using Unicorn.Net;
+using Unicorn.ServiceModel;
 
 namespace DemoApp.UWP
 {

@@ -38,10 +38,12 @@ namespace DemoApp.UWP
             var service = new GoogleSearchService();
             var result = await service.InvokeAsync(parameter);
 
+            System.Diagnostics.Debug.WriteLine(result.Content);
 
-            await StorageHelper.CopyFolderFromInstalledLocation("assets");
-            await StorageHelper.GetFilesInFolder("assets\\LockScreenLogo.scale-200.png", ApplicationData.Current.LocalFolder);
-            await StorageHelper.CopyFolder(ApplicationData.Current.LocalFolder, ApplicationData.Current.LocalFolder);
+
+            //await StorageHelper.CopyFolderFromInstalledLocation("assets");
+            //await StorageHelper.GetFilesInFolder("assets\\LockScreenLogo.scale-200.png", ApplicationData.Current.LocalFolder);
+            //await StorageHelper.CopyFolder(ApplicationData.Current.LocalFolder, ApplicationData.Current.LocalFolder);
         }
     }
 }

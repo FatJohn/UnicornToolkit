@@ -19,15 +19,7 @@
 // SOFTWARE
 
 using System;
-using System.Text;
-using System.Threading.Tasks;
-using System.Linq;
-#if WINDOWS_UWP
-using Windows.Web.Http;
-using System.Runtime.InteropServices.WindowsRuntime;
-#else
 using System.Net.Http;
-#endif
 
 namespace Unicorn
 {

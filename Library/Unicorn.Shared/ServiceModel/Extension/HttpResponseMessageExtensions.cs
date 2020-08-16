@@ -19,15 +19,10 @@
 // SOFTWARE
 
 using System;
+using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using System.Linq;
-#if WINDOWS_UWP
-using Windows.Web.Http;
-using System.Runtime.InteropServices.WindowsRuntime;
-#else
-using System.Net.Http;
-#endif
 
 namespace Unicorn
 {
@@ -42,18 +37,7 @@ namespace Unicorn
                 return null;
             }
 
-#if WINDOWS_UWP
-            var buffer = await source.Content.ReadAsBufferAsync();
-            if (buffer == null || buffer.Length == 0)
-            {
-                return null;
-            }
-
-            var contentBytes = new byte[buffer.Length];
-            buffer.CopyTo(0, contentBytes, 0, contentBytes.Length);
-#else
             var contentBytes = await source.Content.ReadAsByteArrayAsync();
-#endif
             return Encoding.UTF8.GetString(contentBytes, 0, contentBytes.Length);
         }
 
@@ -69,12 +53,7 @@ namespace Unicorn
                 return string.Empty;
             }
 
-#if WINDOWS_UWP
-            requestMessage.Headers.TryGetValue(requestIdHeaderKey, out var requestId);
-            return requestId;
-#else
             return requestMessage.Headers.GetValues(requestIdHeaderKey).FirstOrDefault();
-#endif
         }
 
         public static string AddRequestId(this HttpRequestMessage requestMessage)

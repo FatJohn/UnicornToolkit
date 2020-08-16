@@ -24,28 +24,11 @@ using System.Threading.Tasks;
 using System.Threading;
 using Unicorn.Net;
 using System.IO;
-#if WINDOWS_UWP
-using Windows.Web.Http;
-using Windows.Web.Http.Headers;
-using Windows.Storage;
-using Windows.Storage.Streams;
-using Windows.Web.Http.Filters;
-using Windows.Foundation;
-using System.Runtime.InteropServices.WindowsRuntime;
-#else
 using System.Net.Http;
-#endif
 
 namespace Unicorn.ServiceModel
 {
-#if WINDOWS_UWP
-    public delegate void HttpServiceProgressCallback(double? progress);
-#endif
-
     public abstract class BaseHttpService<TResult, TParameter, TParser>
-#if WINDOWS_UWP
-        : IProgress<HttpProgress>
-#endif
         where TParameter : HttpServiceParameter
         where TParser : BaseParser<TResult, HttpResponseMessage>, new()
     {
@@ -55,52 +38,6 @@ namespace Unicorn.ServiceModel
         /// 發送 Request 前的前置處理步驟
         /// </summary>
         public List<IHttpPreFlow> PreProcessFlow { get; } = new List<IHttpPreFlow>();
-
-#if WINDOWS_UWP
-        private WeakReference<HttpServiceProgressCallback> sendProgressCallbackReference;
-        public HttpServiceProgressCallback SendProgressCallback
-        {
-            private get
-            {
-                HttpServiceProgressCallback callback = null;
-                sendProgressCallbackReference?.TryGetTarget(out callback);
-                return callback;
-            }
-            set
-            {
-                if (sendProgressCallbackReference == null)
-                {
-                    sendProgressCallbackReference = new WeakReference<HttpServiceProgressCallback>(value);
-                }
-                else
-                {
-                    sendProgressCallbackReference.SetTarget(value);
-                }
-            }
-        }
-
-        private WeakReference<HttpServiceProgressCallback> receiveProgressCallbackReference;
-        public HttpServiceProgressCallback ReceiveProgressCallback
-        {
-            private get
-            {
-                HttpServiceProgressCallback callback = null;
-                receiveProgressCallbackReference?.TryGetTarget(out callback);
-                return callback;
-            }
-            set
-            {
-                if (receiveProgressCallbackReference == null)
-                {
-                    receiveProgressCallbackReference = new WeakReference<HttpServiceProgressCallback>(value);
-                }
-                else
-                {
-                    receiveProgressCallbackReference.SetTarget(value);
-                }
-            }
-        }
-#endif
 
         protected BaseHttpService()
         {
@@ -183,19 +120,7 @@ namespace Unicorn.ServiceModel
             var cacheFileName = CreateCacheFileName(requestUrl, packResult);
 
             // 3. 檢查檔案是否存在
-#if WINDOWS_UWP
-            var rootFolder = ApplicationData.Current.LocalCacheFolder;
-            var storageItem = await rootFolder.TryGetItemAsync(cacheFileName);
-            var cacheFile = storageItem as StorageFile;
-            if (cacheFile == null)
-            {
-                return null;
-            }
-
-            var cacheFileStream = await cacheFile.OpenReadAsync();
-#else
             var cacheFileStream = await PlatformService.File.OpenReadStreamAsync(cacheFileName).ConfigureAwait(false);
-#endif
             if (cacheFileStream == null)
             {
                 return null;
@@ -211,38 +136,6 @@ namespace Unicorn.ServiceModel
             return CreateCacheResponse(cacheContent);
         }
 
-#if WINDOWS_UWP
-        private async Task<IBuffer> ReadCacheContent(TParameter parameter, IRandomAccessStream cacheFileStream)
-        {
-            var cacheFileSize = Convert.ToUInt32(cacheFileStream.Size);
-            var readNativeBuffer = new Windows.Storage.Streams.Buffer(cacheFileSize);
-            await cacheFileStream.ReadAsync(readNativeBuffer, readNativeBuffer.Capacity, InputStreamOptions.None);
-
-            cacheFileStream.Dispose();
-
-            const int cacheTimeTicksLength = sizeof(long);
-            var readStartIndex = cacheFileSize - cacheTimeTicksLength;
-            var ticksBytes = new byte[cacheTimeTicksLength];
-            readNativeBuffer.CopyTo(readStartIndex, ticksBytes, 0, ticksBytes.Length);
-
-            var cacheTimeTicks = BitConverter.ToInt64(ticksBytes, 0);
-            if (!IsValidCacheTime(parameter, cacheTimeTicks))
-            {
-                return null;
-            }
-
-            readNativeBuffer.Length = readStartIndex;
-
-            return readNativeBuffer;
-        }
-
-        private HttpResponseMessage CreateCacheResponse(IBuffer cacheContent)
-        {
-            var httpResponse = new HttpResponseMessage(Windows.Web.Http.HttpStatusCode.Ok);
-            httpResponse.Content = new HttpBufferContent(cacheContent);
-            return httpResponse;
-        }
-#else
         private Task<byte[]> ReadCacheContent(TParameter parameter, Stream cacheFileStream)
         {
             var br = new BinaryReader(cacheFileStream);
@@ -274,7 +167,6 @@ namespace Unicorn.ServiceModel
             httpResponse.Content = new ByteArrayContent(cacheContent);
             return httpResponse;
         }
-#endif
 
         private bool IsValidCacheTime(TParameter parameter, long cacheTimeTicks)
         {
@@ -425,84 +317,36 @@ namespace Unicorn.ServiceModel
             return httpResponse;
         }
 
-        protected virtual async Task<HttpResponseMessage> SendRequest(HttpRequestMessage httpRequestMessage)
+        protected virtual Task<HttpResponseMessage> SendRequest(HttpRequestMessage httpRequestMessage)
         {
             var httpClient = HttpClientContainer.Get();
 
             if (cancellationTokenSource == null)
             {
-#if WINDOWS_UWP
-                return await httpClient.SendRequestAsync(httpRequestMessage).AsTask(this);
-#else
-                return await httpClient.SendAsync(httpRequestMessage);
-#endif
+                return httpClient.SendAsync(httpRequestMessage);
             }
             else
             {
-#if WINDOWS_UWP
-                return await httpClient.SendRequestAsync(httpRequestMessage).AsTask(cancellationTokenSource.Token, this);
-#else
-                return await httpClient.SendAsync(httpRequestMessage, cancellationTokenSource.Token);
-#endif
+                return httpClient.SendAsync(httpRequestMessage, cancellationTokenSource.Token);
             }
         }
-
-#if WINDOWS_UWP
-        public void Report(HttpProgress progress)
-        {
-            double? progressValue = null;
-
-            switch (progress.Stage)
-            {
-                case HttpProgressStage.SendingContent:
-                    if (progress.TotalBytesToSend.HasValue)
-                    {
-                        progressValue = (double)progress.BytesSent / (double)progress.TotalBytesToSend.Value;
-                    }
-                    SendProgressCallback?.Invoke(progressValue);
-                    break;
-                case HttpProgressStage.ReceivingContent:
-                    if (progress.TotalBytesToReceive.HasValue)
-                    {
-                        progressValue = (double)progress.BytesReceived / (double)progress.TotalBytesToReceive.Value;
-                    }
-                    ReceiveProgressCallback?.Invoke(progressValue);
-                    break;
-            }
-        }
-#endif
 
         private async Task SaveCache(TParameter parameter, string baseRequestUrl, HttpParameterPackResult packResult, HttpResponseMessage httpResponse)
         {
             var cacheFileName = CreateCacheFileName(baseRequestUrl, packResult);
-#if WINDOWS_UWP
-            var rootFolder = ApplicationData.Current.LocalCacheFolder;
-            IRandomAccessStream cacheFileStream = null;
-#else
             Stream cacheFileStream = null;
-#endif
 
             try
             {
-#if WINDOWS_UWP
-                var cacheFile = await rootFolder.CreateFileAsync(cacheFileName, CreationCollisionOption.ReplaceExisting);
-                cacheFileStream = await cacheFile.OpenAsync(FileAccessMode.ReadWrite);
-                var content = await httpResponse.Content.ReadAsBufferAsync();
-                await cacheFileStream.WriteAsync(content);
-#else
+
                 cacheFileStream = await PlatformService.File.OpenWriteStreamAsync(cacheFileName).ConfigureAwait(false);
                 var content = await httpResponse.Content.ReadAsByteArrayAsync().ConfigureAwait(false);
                 await cacheFileStream.WriteAsync(content, 0, content.Length).ConfigureAwait(false);
-#endif
+
                 var cacheTimeTicks = DateTime.Now.Ticks;
                 var cacheTimeTicksBytes = BitConverter.GetBytes(cacheTimeTicks);
-#if WINDOWS_UWP
-                await cacheFileStream.WriteAsync(cacheTimeTicksBytes.AsBuffer());
-                await cacheFileStream.FlushAsync();
-#else
                 await cacheFileStream.WriteAsync(cacheTimeTicksBytes, 0, cacheTimeTicksBytes.Length).ConfigureAwait(false);
                 await cacheFileStream.FlushAsync().ConfigureAwait(false);
-#endif
             }
             catch (Exception ex)
             {
@@ -513,7 +357,6 @@ namespace Unicorn.ServiceModel
                 if (cacheFileStream != null)
                 {
                     cacheFileStream.Dispose();
-                    cacheFileStream = null;
                 }
             }
         }

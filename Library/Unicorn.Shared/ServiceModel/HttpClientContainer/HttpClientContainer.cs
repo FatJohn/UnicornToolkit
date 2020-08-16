@@ -19,12 +19,9 @@
 // SOFTWARE
 
 using System;
-#if WINDOWS_UWP
-using Windows.Web.Http;
-using Windows.Web.Http.Filters;
-#else
+
 using System.Net.Http;
-#endif
+
 
 namespace Unicorn.ServiceModel
 {
@@ -32,20 +29,13 @@ namespace Unicorn.ServiceModel
     {
         private static Lazy<HttpClient> httpClientInstance = new Lazy<HttpClient>(() =>
         {
-#if WINDOWS_UWP
-            var httpFilter = new HttpBaseProtocolFilter();
-            httpFilter.CacheControl.ReadBehavior = HttpCacheReadBehavior.MostRecent;
-            httpFilter.CacheControl.WriteBehavior = HttpCacheWriteBehavior.NoCache;
-            var timeoutFilter = new TimeoutFilter(httpFilter);
-            return new HttpClient(timeoutFilter);
-#else
+
             var timeoutHandler = new TimeoutHandler();
             var httpClient = new HttpClient(timeoutHandler);
             httpClient.Timeout = System.Threading.Timeout.InfiniteTimeSpan;
             httpClient.DefaultRequestHeaders.CacheControl = new System.Net.Http.Headers.CacheControlHeaderValue();
             httpClient.DefaultRequestHeaders.CacheControl.NoCache = true;
             return httpClient;
-#endif
         });
 
         public static HttpClient Get()
