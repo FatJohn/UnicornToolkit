@@ -17,6 +17,8 @@ MSBuild CommunityTasks 額外增加的Tasks參考網址，請翻原始碼 : http
     <ItemGroup>
         <ProjectToBuild Include="$(NetStandardSolutionFile)">
         </ProjectToBuild>
+        <ProjectToBuild Include="$(DotNetSolutionFile)">
+        </ProjectToBuild>
         <ProjectToBuild Include="$(UWPSolutionFile)">
         </ProjectToBuild>
         <ProjectToBuild Include="$(UWPSolutionFile)">
@@ -33,12 +35,15 @@ MSBuild CommunityTasks 額外增加的Tasks參考網址，請翻原始碼 : http
     <Target Name="Clear">
         <DeleteTree Directories=".\Library\Unicorn\bin" />
         <DeleteTree Directories=".\Library\Unicorn\obj" />
+        <DeleteTree Directories=".\Library\Unicorn.DotNet\bin" />
+        <DeleteTree Directories=".\Library\Unicorn.DotNet\obj" />
         <DeleteTree Directories=".\Library\Unicorn.UWP\bin" />
         <DeleteTree Directories=".\Library\Unicorn.UWP\obj" />
     </Target>
 
     <Target Name="RestoreNuGetPackage">
         <NuGetRestore Solution="$(NetStandardSolutionFile)"/>
+        <NuGetRestore Solution="$(DotNetSolutionFile)"/>
         <NuGetRestore Solution="$(UWPSolutionFile)"/>
     </Target>
 
