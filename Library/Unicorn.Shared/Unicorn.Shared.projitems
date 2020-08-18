@@ -41,7 +41,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\Extension\HttpRequestMessageExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\Extension\HttpResponseMessageExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\HttpClientContainer\HttpClientContainer.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\HttpClientContainer\TimeoutFilter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\HttpClientContainer\TimeoutHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\HttpFlow\IHttpPreFlow.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\HttpRequestCreator\HttpRequestCreator.cs" />

@@ -38,13 +38,7 @@ namespace Unicorn.ServiceModel
             }
 
             var seconds = Convert.ToInt64(reader.Value);
-
-            // 目前用的 dotnet 版本為 4.5.2 不支援 FromUnixTimeSeconds，若日後升級到 4.6 以上就可以把此 #if 拔掉
-#if WINDOWS_UWP
             return DateTimeOffset.FromUnixTimeSeconds(seconds).ToLocalTime();
-#else
-            return new DateTimeOffset(UnixDateTimeConverter.SecondsToDateTime(seconds)).ToLocalTime();
-#endif
         }
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
@@ -56,13 +50,7 @@ namespace Unicorn.ServiceModel
             }
 
             var dateTime = (DateTimeOffset)value;
-            
-            // 目前用的 dotnet 版本為 4.5.2 不支援 ToUnixTimeSeconds，若日後升級到 4.6 以上就可以把此 #if 拔掉
-#if WINDOWS_UWP
             writer.WriteValue(dateTime.ToUnixTimeSeconds());
-#else
-            writer.WriteValue(UnixDateTimeConverter.ToSeconds(dateTime.DateTime));
-#endif
         }
     }
 }

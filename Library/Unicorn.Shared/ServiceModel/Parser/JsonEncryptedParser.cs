@@ -21,12 +21,7 @@
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Unicorn.Net;
-
-#if WINDOWS_UWP
-using Windows.Web.Http;
-#else
 using System.Net.Http;
-#endif
 
 namespace Unicorn.ServiceModel
 {

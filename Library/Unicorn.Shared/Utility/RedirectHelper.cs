@@ -20,14 +20,8 @@
 
 using System;
 using System.Threading.Tasks;
-
-#if WINDOWS_UWP
-using Windows.Web.Http;
-using Windows.Web.Http.Filters;
-#else
 using System.Net;
 using System.Net.Http;
-#endif
 
 namespace Unicorn
 {
@@ -43,34 +37,11 @@ namespace Unicorn
                 return url;
             }
 
-#if WINDOWS_UWP
-            var httpFilter = new HttpBaseProtocolFilter
-            {
-                AllowAutoRedirect = false,
-            };
-            try
-            {
-                using (var client = new HttpClient(httpFilter))
-                {
-                    var httpRequest = new HttpRequestMessage(HttpMethod.Head, uri);
-                    var httpResponse = await client.SendRequestAsync(httpRequest);
-                    if (httpResponse.StatusCode == HttpStatusCode.PermanentRedirect || httpResponse.StatusCode == HttpStatusCode.MovedPermanently)
-                    {
-                        result = await GetOriginalUrl(httpResponse.Headers.Location.AbsoluteUri);
-                    }
-                    httpResponse.Dispose();
-                }
-            }
-            catch (Exception)
-            {
-                return result;
-            }
-
-#else
             var httpClientHandler = new HttpClientHandler
             {
                 AllowAutoRedirect = false,
             };
+
             try
             {
                 using (var client = new HttpClient(httpClientHandler))
@@ -81,15 +52,13 @@ namespace Unicorn
                         result = await GetOriginalUrl(httpResponse.Headers.Location.AbsoluteUri);
                     }
                     httpResponse.Dispose();
+                    return result;
                 }
             }
             catch (Exception)
             {
                 return result;
             }
-#endif
-
-            return result;
         }
     }
 }
