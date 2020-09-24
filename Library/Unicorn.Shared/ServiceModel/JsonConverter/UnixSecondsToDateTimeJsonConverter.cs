@@ -25,6 +25,17 @@ namespace Unicorn.ServiceModel
 {
     public class UnixSecondsToDateTimeJsonConverter : JsonConverter
     {
+        private readonly JsonWriteNumberFormat jsonWriteNumberFormat = JsonWriteNumberFormat.Float;
+
+        public UnixSecondsToDateTimeJsonConverter()
+        {
+        }
+
+        public UnixSecondsToDateTimeJsonConverter(JsonWriteNumberFormat jsonWriteNumberFormat)
+        {
+            this.jsonWriteNumberFormat = jsonWriteNumberFormat;
+        }
+
         public override bool CanConvert(Type objectType)
         {
             return objectType == typeof(int) || objectType == typeof(long) || objectType == typeof(float) || objectType == typeof(double);
@@ -50,7 +61,17 @@ namespace Unicorn.ServiceModel
             }
 
             var dateTime = (DateTime)value;
-            writer.WriteValue(UnixDateTimeConverter.ToSeconds(dateTime));
+            var seconds = UnixDateTimeConverter.ToSeconds(dateTime);
+            switch (jsonWriteNumberFormat)
+            {
+                case JsonWriteNumberFormat.Integer:
+                    writer.WriteValue(Convert.ToInt64(Math.Floor(seconds)));
+                    break;
+                case JsonWriteNumberFormat.Float:
+                default:
+                    writer.WriteValue(seconds);
+                    break;
+            }
         }
     }
 }

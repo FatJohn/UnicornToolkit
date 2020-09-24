@@ -25,6 +25,17 @@ namespace Unicorn.ServiceModel
 {
     public class UnixMilliSecondsToDateTimeJsonConverter : JsonConverter
     {
+        private readonly JsonWriteNumberFormat jsonWriteNumberFormat = JsonWriteNumberFormat.Float;
+
+        public UnixMilliSecondsToDateTimeJsonConverter()
+        {
+        }
+
+        public UnixMilliSecondsToDateTimeJsonConverter(JsonWriteNumberFormat jsonWriteNumberFormat)
+        {
+            this.jsonWriteNumberFormat = jsonWriteNumberFormat;
+        }
+
         public override bool CanConvert(Type objectType)
         {
             return objectType == typeof(int) || objectType == typeof(long) || objectType == typeof(float) || objectType == typeof(double);
@@ -37,8 +48,8 @@ namespace Unicorn.ServiceModel
                 return DateTime.MinValue;
             }
 
-            var seconds = Convert.ToDouble(reader.Value);
-            return UnixDateTimeConverter.MilliSecondsToDateTime(seconds);
+            var milliseconds = Convert.ToDouble(reader.Value);
+            return UnixDateTimeConverter.MilliSecondsToDateTime(milliseconds);
         }
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
@@ -50,7 +61,17 @@ namespace Unicorn.ServiceModel
             }
 
             var dateTime = (DateTime)value;
-            writer.WriteValue(UnixDateTimeConverter.ToMilliSeconds(dateTime));
+            var milliSeconds = UnixDateTimeConverter.ToMilliSeconds(dateTime);
+            switch (jsonWriteNumberFormat)
+            {
+                case JsonWriteNumberFormat.Integer:
+                    writer.WriteValue(Convert.ToInt64(Math.Floor(milliSeconds)));
+                    break;
+                case JsonWriteNumberFormat.Float:
+                default:
+                    writer.WriteValue(milliSeconds);
+                    break;
+            }
         }
     }
 }

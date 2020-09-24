@@ -49,6 +49,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\JsonConverter\EnumKeyJsonKeywordConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\JsonConverter\Int32JsonConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\JsonConverter\IntToEnumJsonConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\JsonConverter\JsonWriteNumberFormat.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\JsonConverter\ListEnumKeyJsonConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\JsonConverter\SafeIntegerJsonConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ServiceModel\JsonConverter\SafeStringEnumConverter.cs" />

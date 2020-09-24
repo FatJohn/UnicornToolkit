@@ -68,7 +68,7 @@ namespace Unicorn
                 return 0;
             }
 
-            return Math.Floor(timeSpan.TotalSeconds);
+            return timeSpan.TotalSeconds;
         }
 
         public static double ToMilliSeconds(DateTime dateTime)
@@ -85,7 +85,7 @@ namespace Unicorn
                 return 0;
             }
 
-            return Math.Floor(timeSpan.TotalMilliseconds);
+            return timeSpan.TotalMilliseconds;
         }
 
         public static int ToEpoch(long time)
