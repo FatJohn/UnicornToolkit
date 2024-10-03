@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30320.27
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35312.102
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Library", "Library", "{20B379A5-10CE-40E3-B621-17ACEA21AB74}"
 EndProject
@@ -10,8 +10,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unicorn.UWP", "Library\Unicorn.UWP\Unicorn.UWP.csproj", "{D8891BE4-8F87-4D79-9181-07A9538C8B74}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DemoApp", "DemoApp", "{DB6DAFEB-BF9F-4371-88E2-1967C7375EEA}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoApp.UWP", "DemoApp\DemoApp.UWP\DemoApp.UWP.csproj", "{43F83301-FC7A-4431-BE1E-9BC914AB1482}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Unicorn", "Library\Unicorn\Unicorn.csproj", "{B4325EEF-8209-4BBB-B498-0DCD94C52DDA}"
 EndProject
@@ -23,17 +21,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoApp.DotNet", "DemoApp\D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unicorn.DotNet", "Library\Unicorn.DotNet\Unicorn.DotNet.csproj", "{82B5A836-F71F-481F-8140-0D9EBAD8BF43}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoApp.UWP", "DemoApp\DemoApp.UWP\DemoApp.UWP.csproj", "{43F83301-FC7A-4431-BE1E-9BC914AB1482}"
+EndProject
 Global
-	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		Library\Unicorn.Shared\Unicorn.Shared.projitems*{2a5998e5-3a5a-4d48-b0b9-d2fa5354d0b9}*SharedItemsImports = 13
-		DemoApp\DemoApp.Shared\DemoApp.Shared.projitems*{43f83301-fc7a-4431-be1e-9bc914ab1482}*SharedItemsImports = 4
-		Library\Unicorn.Shared\Unicorn.Shared.projitems*{82b5a836-f71f-481f-8140-0d9ebad8bf43}*SharedItemsImports = 4
-		DemoApp\DemoApp.Shared\DemoApp.Shared.projitems*{96c733ce-7af4-4d7f-bdc9-2333270c9607}*SharedItemsImports = 5
-		Library\Unicorn.Shared\Unicorn.Shared.projitems*{b4325eef-8209-4bbb-b498-0dcd94c52dda}*SharedItemsImports = 5
-		DemoApp\DemoApp.Shared\DemoApp.Shared.projitems*{c1b26942-d87d-4f46-b6a6-3d3f6652f7b6}*SharedItemsImports = 4
-		DemoApp\DemoApp.Shared\DemoApp.Shared.projitems*{ccf410b2-4144-4d42-b2ff-49e5a57e40f9}*SharedItemsImports = 13
-		Library\Unicorn.Shared\Unicorn.Shared.projitems*{d8891be4-8f87-4d79-9181-07a9538c8b74}*SharedItemsImports = 4
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|ARM = Debug|ARM
@@ -61,26 +51,6 @@ Global
 		{D8891BE4-8F87-4D79-9181-07A9538C8B74}.Release|x64.Build.0 = Release|x64
 		{D8891BE4-8F87-4D79-9181-07A9538C8B74}.Release|x86.ActiveCfg = Release|x86
 		{D8891BE4-8F87-4D79-9181-07A9538C8B74}.Release|x86.Build.0 = Release|x86
-		{43F83301-FC7A-4431-BE1E-9BC914AB1482}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{43F83301-FC7A-4431-BE1E-9BC914AB1482}.Debug|ARM.ActiveCfg = Debug|ARM
-		{43F83301-FC7A-4431-BE1E-9BC914AB1482}.Debug|ARM.Build.0 = Debug|ARM
-		{43F83301-FC7A-4431-BE1E-9BC914AB1482}.Debug|ARM.Deploy.0 = Debug|ARM
-		{43F83301-FC7A-4431-BE1E-9BC914AB1482}.Debug|x64.ActiveCfg = Debug|x64
-		{43F83301-FC7A-4431-BE1E-9BC914AB1482}.Debug|x64.Build.0 = Debug|x64
-		{43F83301-FC7A-4431-BE1E-9BC914AB1482}.Debug|x64.Deploy.0 = Debug|x64
-		{43F83301-FC7A-4431-BE1E-9BC914AB1482}.Debug|x86.ActiveCfg = Debug|x86
-		{43F83301-FC7A-4431-BE1E-9BC914AB1482}.Debug|x86.Build.0 = Debug|x86
-		{43F83301-FC7A-4431-BE1E-9BC914AB1482}.Debug|x86.Deploy.0 = Debug|x86
-		{43F83301-FC7A-4431-BE1E-9BC914AB1482}.Release|Any CPU.ActiveCfg = Release|x86
-		{43F83301-FC7A-4431-BE1E-9BC914AB1482}.Release|ARM.ActiveCfg = Release|ARM
-		{43F83301-FC7A-4431-BE1E-9BC914AB1482}.Release|ARM.Build.0 = Release|ARM
-		{43F83301-FC7A-4431-BE1E-9BC914AB1482}.Release|ARM.Deploy.0 = Release|ARM
-		{43F83301-FC7A-4431-BE1E-9BC914AB1482}.Release|x64.ActiveCfg = Release|x64
-		{43F83301-FC7A-4431-BE1E-9BC914AB1482}.Release|x64.Build.0 = Release|x64
-		{43F83301-FC7A-4431-BE1E-9BC914AB1482}.Release|x64.Deploy.0 = Release|x64
-		{43F83301-FC7A-4431-BE1E-9BC914AB1482}.Release|x86.ActiveCfg = Release|x86
-		{43F83301-FC7A-4431-BE1E-9BC914AB1482}.Release|x86.Build.0 = Release|x86
-		{43F83301-FC7A-4431-BE1E-9BC914AB1482}.Release|x86.Deploy.0 = Release|x86
 		{B4325EEF-8209-4BBB-B498-0DCD94C52DDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B4325EEF-8209-4BBB-B498-0DCD94C52DDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B4325EEF-8209-4BBB-B498-0DCD94C52DDA}.Debug|ARM.ActiveCfg = Debug|Any CPU
@@ -145,6 +115,30 @@ Global
 		{82B5A836-F71F-481F-8140-0D9EBAD8BF43}.Release|x64.Build.0 = Release|Any CPU
 		{82B5A836-F71F-481F-8140-0D9EBAD8BF43}.Release|x86.ActiveCfg = Release|Any CPU
 		{82B5A836-F71F-481F-8140-0D9EBAD8BF43}.Release|x86.Build.0 = Release|Any CPU
+		{43F83301-FC7A-4431-BE1E-9BC914AB1482}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{43F83301-FC7A-4431-BE1E-9BC914AB1482}.Debug|Any CPU.Build.0 = Debug|x64
+		{43F83301-FC7A-4431-BE1E-9BC914AB1482}.Debug|Any CPU.Deploy.0 = Debug|x64
+		{43F83301-FC7A-4431-BE1E-9BC914AB1482}.Debug|ARM.ActiveCfg = Debug|ARM
+		{43F83301-FC7A-4431-BE1E-9BC914AB1482}.Debug|ARM.Build.0 = Debug|ARM
+		{43F83301-FC7A-4431-BE1E-9BC914AB1482}.Debug|ARM.Deploy.0 = Debug|ARM
+		{43F83301-FC7A-4431-BE1E-9BC914AB1482}.Debug|x64.ActiveCfg = Debug|x64
+		{43F83301-FC7A-4431-BE1E-9BC914AB1482}.Debug|x64.Build.0 = Debug|x64
+		{43F83301-FC7A-4431-BE1E-9BC914AB1482}.Debug|x64.Deploy.0 = Debug|x64
+		{43F83301-FC7A-4431-BE1E-9BC914AB1482}.Debug|x86.ActiveCfg = Debug|x86
+		{43F83301-FC7A-4431-BE1E-9BC914AB1482}.Debug|x86.Build.0 = Debug|x86
+		{43F83301-FC7A-4431-BE1E-9BC914AB1482}.Debug|x86.Deploy.0 = Debug|x86
+		{43F83301-FC7A-4431-BE1E-9BC914AB1482}.Release|Any CPU.ActiveCfg = Release|x64
+		{43F83301-FC7A-4431-BE1E-9BC914AB1482}.Release|Any CPU.Build.0 = Release|x64
+		{43F83301-FC7A-4431-BE1E-9BC914AB1482}.Release|Any CPU.Deploy.0 = Release|x64
+		{43F83301-FC7A-4431-BE1E-9BC914AB1482}.Release|ARM.ActiveCfg = Release|ARM
+		{43F83301-FC7A-4431-BE1E-9BC914AB1482}.Release|ARM.Build.0 = Release|ARM
+		{43F83301-FC7A-4431-BE1E-9BC914AB1482}.Release|ARM.Deploy.0 = Release|ARM
+		{43F83301-FC7A-4431-BE1E-9BC914AB1482}.Release|x64.ActiveCfg = Release|x64
+		{43F83301-FC7A-4431-BE1E-9BC914AB1482}.Release|x64.Build.0 = Release|x64
+		{43F83301-FC7A-4431-BE1E-9BC914AB1482}.Release|x64.Deploy.0 = Release|x64
+		{43F83301-FC7A-4431-BE1E-9BC914AB1482}.Release|x86.ActiveCfg = Release|x86
+		{43F83301-FC7A-4431-BE1E-9BC914AB1482}.Release|x86.Build.0 = Release|x86
+		{43F83301-FC7A-4431-BE1E-9BC914AB1482}.Release|x86.Deploy.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -152,14 +146,24 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{2A5998E5-3A5A-4D48-B0B9-D2FA5354D0B9} = {20B379A5-10CE-40E3-B621-17ACEA21AB74}
 		{D8891BE4-8F87-4D79-9181-07A9538C8B74} = {20B379A5-10CE-40E3-B621-17ACEA21AB74}
-		{43F83301-FC7A-4431-BE1E-9BC914AB1482} = {DB6DAFEB-BF9F-4371-88E2-1967C7375EEA}
 		{B4325EEF-8209-4BBB-B498-0DCD94C52DDA} = {20B379A5-10CE-40E3-B621-17ACEA21AB74}
 		{96C733CE-7AF4-4D7F-BDC9-2333270C9607} = {DB6DAFEB-BF9F-4371-88E2-1967C7375EEA}
 		{CCF410B2-4144-4D42-B2FF-49E5A57E40F9} = {DB6DAFEB-BF9F-4371-88E2-1967C7375EEA}
 		{C1B26942-D87D-4F46-B6A6-3D3F6652F7B6} = {DB6DAFEB-BF9F-4371-88E2-1967C7375EEA}
 		{82B5A836-F71F-481F-8140-0D9EBAD8BF43} = {20B379A5-10CE-40E3-B621-17ACEA21AB74}
+		{43F83301-FC7A-4431-BE1E-9BC914AB1482} = {DB6DAFEB-BF9F-4371-88E2-1967C7375EEA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8940044D-D50E-4422-8E1C-0C144710ACAC}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Library\Unicorn.Shared\Unicorn.Shared.projitems*{2a5998e5-3a5a-4d48-b0b9-d2fa5354d0b9}*SharedItemsImports = 13
+		DemoApp\DemoApp.Shared\DemoApp.Shared.projitems*{43f83301-fc7a-4431-be1e-9bc914ab1482}*SharedItemsImports = 4
+		Library\Unicorn.Shared\Unicorn.Shared.projitems*{82b5a836-f71f-481f-8140-0d9ebad8bf43}*SharedItemsImports = 4
+		DemoApp\DemoApp.Shared\DemoApp.Shared.projitems*{96c733ce-7af4-4d7f-bdc9-2333270c9607}*SharedItemsImports = 5
+		Library\Unicorn.Shared\Unicorn.Shared.projitems*{b4325eef-8209-4bbb-b498-0dcd94c52dda}*SharedItemsImports = 5
+		DemoApp\DemoApp.Shared\DemoApp.Shared.projitems*{c1b26942-d87d-4f46-b6a6-3d3f6652f7b6}*SharedItemsImports = 4
+		DemoApp\DemoApp.Shared\DemoApp.Shared.projitems*{ccf410b2-4144-4d42-b2ff-49e5a57e40f9}*SharedItemsImports = 13
+		Library\Unicorn.Shared\Unicorn.Shared.projitems*{d8891be4-8f87-4d79-9181-07a9538c8b74}*SharedItemsImports = 4
 	EndGlobalSection
 EndGlobal
